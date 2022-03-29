@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -15,8 +15,6 @@
     <Folder Include="Components\Public\" />
     <Folder Include="Components\Public\Shared\" />
     <Folder Include="wwwroot\assets\img\" />
-    <Folder Include="wwwroot\css\font\fontcss\" />
-    <Folder Include="wwwroot\css\font\fonts\" />
   </ItemGroup>
 
 </Project>

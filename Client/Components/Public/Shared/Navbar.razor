@@ -1,0 +1,90 @@
+﻿@inject NavigationManager NavigationManager
+
+<nav class="navbar navbar-expand-lg d-flex cloudy-serif navbar-light
+            justify-content-between align-items-center pb-lg-3">
+    <div class="m-0">
+        <a href="/" class="navbar-brand md-f-size-1-5 text-dark fw-bold">
+            <img class="navbar-brand img" src="" alt="Website Icon" /> Crushing Bind
+        </a>
+    </div>
+
+    @*Collapses the navbar for smaller screens*@
+    <button class="navbar-toggler mx-1" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class=navbar-toggler-icon></span>
+    </button>
+
+    @*Navigation menu links*@
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <a href=@HomePageUri class="nav-link md-and-smaller-my-3
+                    @(IsPageActive(HomePageUri) ? "active" : string.Empty)">
+                    Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href=@ArchivesPageUri class="nav-link md-and-smaller-my-3
+                    @(IsPageActive(ArchivesPageUri) ? "active" : string.Empty)">
+                    Archives
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href=@CharactersPageUri class="nav-link md-and-smaller-my-3
+                    @(IsPageActive(CharactersPageUri) ? "active" : string.Empty)">
+                    Characters
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href=@AboutPageUri class="nav-link md-and-smaller-my-3
+                    @(IsPageActive(AboutPageUri) ? "active" : string.Empty)">
+                    About
+                </a>
+            </li>
+        </ul>
+
+    </div>
+</nav>
+
+
+@code
+{
+    //Page URI's
+    private const string HomePageUri = "/";
+    private const string ArchivesPageUri = "/archives";
+    private const string CharactersPageUri = "/characters";
+    private const string AboutPageUri = "/about";
+
+    private bool IsPageActive(string pageToCheckUri)
+    {
+
+        //Skip(3) to skip the three slashes in https://example.com/
+        string[] currentUriSplitBetweenSlashes = NavigationManager.Uri.Split('/').Skip(3).ToArray();
+
+        if (pageToCheckUri == HomePageUri)
+        {
+            if (currentUriSplitBetweenSlashes.Last().Length == 0)
+            {
+                return true;
+            }
+        }
+
+        //Deeper URIs
+        string[] pageToCheckUriSplitBetweenSlashes = pageToCheckUri.Split('/').Skip(1).ToArray();
+        foreach (string currentUriPart in currentUriSplitBetweenSlashes)
+        {
+            foreach (string pageToCheckUriPart in pageToCheckUriSplitBetweenSlashes)
+            {
+                if (pageToCheckUriPart == currentUriPart)
+                {
+                    return true;
+                }
+            }
+        }
+
+
+
+        return false;
+    }
+
+}

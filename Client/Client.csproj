@@ -12,8 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Public\" />
-    <Folder Include="Components\Public\Shared\" />
     <Folder Include="wwwroot\assets\img\" />
   </ItemGroup>
 

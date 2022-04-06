@@ -5,7 +5,7 @@ namespace Server.Data
 {
     public class AppDBContext : DbContext
     {
-        public DbSet<Archive> Archives { get; set; }
+        public DbSet<ArchiveModel> ArchiveModels { get; set; }
 
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options) { }
 
@@ -15,19 +15,19 @@ namespace Server.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            Archive[] categoriesToSeed = new Archive[3];
+            ArchiveModel[] categoriesToSeed = new ArchiveModel[3];
 
             for(int i = 1; i < 4; i++)
             {
-                categoriesToSeed[i - 1] = new Archive
+                categoriesToSeed[i - 1] = new ArchiveModel
                 {
                     ArchiveId = i,
-                    ArchiveImagePath = "uploads/placeholder.jpg",
+                    ArchiveImagePath = $"uploads/Chapter_{i}_Thumbnail.png",
                     ArchiveChapterNumber = $"Chapter {i}"
                 };
             }
 
-            modelBuilder.Entity<Archive>().HasData(categoriesToSeed);
+            modelBuilder.Entity<ArchiveModel>().HasData(categoriesToSeed);
 
         }
 

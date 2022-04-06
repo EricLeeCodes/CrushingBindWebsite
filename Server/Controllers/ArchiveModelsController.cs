@@ -8,11 +8,11 @@ namespace Server.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class ArchivesController : ControllerBase
+    public class ArchiveModelsController : ControllerBase
     {
         private readonly AppDBContext _appDBContext;
 
-        public ArchivesController(AppDBContext appDBContext)
+        public ArchiveModelsController(AppDBContext appDBContext)
         {
             _appDBContext = appDBContext;
         }
@@ -20,9 +20,9 @@ namespace Server.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            List<Archive> archives = await _appDBContext.Archives.ToListAsync();
+            List<ArchiveModel> archiveModels = await _appDBContext.ArchiveModels.ToListAsync();
 
-            return Ok(archives);
+            return Ok(archiveModels);
         }
     }
 }

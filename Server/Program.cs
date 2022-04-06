@@ -17,6 +17,19 @@ builder.Services.AddSwaggerGen();
 //Converts endpoints to lowercase Urls
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
+
+//Cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy",
+        builder =>
+        builder
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+});
+
+
 builder.Services.AddControllers();
 
 
@@ -34,6 +47,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+
+app.UseCors("CorsPolicy");
 
 app.UseAuthorization();
 

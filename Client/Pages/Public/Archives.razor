@@ -1,5 +1,6 @@
 ﻿@page "/archives"
 @using Client.Components.Public.Archives
+@inject InMemoryDatabaseCache InMemoryDatabaseCache
 
 <PageTitle>Crushing Bind | Archives</PageTitle>
 
@@ -12,10 +13,18 @@
             <p>Welcome to Crushing Bind!</p>
         </div>
         <div class="row">
-            <div class="col-md-4">
-                <ArchivesCard/>
-            </div>
-            
+
+            @if (InMemoryDatabaseCache.ArchiveModels != null)
+            {
+                for (int i = 0; i < InMemoryDatabaseCache.ArchiveModels.Count; i++)
+                {
+                    <div class="col-md-4">
+                        <ArchivesCard ArchiveModel="InMemoryDatabaseCache.ArchiveModels[i]"/>
+                    </div>
+                }
+            }
+
+
         </div>
     </div>
 
@@ -24,6 +33,23 @@
 
 <Footer />
 
-@code {
 
+@implements IDisposable
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        InMemoryDatabaseCache.OnArchiveModelsDataChanged += StateHasChanged;
+
+        if (InMemoryDatabaseCache.ArchiveModels == null)
+        {
+            await InMemoryDatabaseCache.GetArchiveModelsFromDatabaseAndCache();
+        }
+    }
+
+    //Unsubscribe from events or else there will be a memory leak.
+    public void Dispose()
+    {
+        InMemoryDatabaseCache.OnArchiveModelsDataChanged -= StateHasChanged;
+    }
 }

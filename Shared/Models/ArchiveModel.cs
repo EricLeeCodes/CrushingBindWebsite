@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shared.Models
 {
-    public class Archive
+    public class ArchiveModel
     {
         [Key]
         public int ArchiveId { get; set; }

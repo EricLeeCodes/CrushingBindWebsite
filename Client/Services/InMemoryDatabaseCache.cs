@@ -13,36 +13,36 @@ namespace Client.Services
             _httpClient = httpClient;
         }
 
-        private List<Archive> _archives = new List<Archive>();
+        private List<ArchiveModel> _archiveModels = null;
 
-        internal List<Archive> Archives
+        internal List<ArchiveModel> ArchiveModels
         {
             get 
             { 
-                return _archives; 
+                return _archiveModels; 
             }
             set 
-            { 
-                _archives = value;
-                NotifyArchivesDataChanged();
+            {
+                _archiveModels = value;
+                NotifyArchiveModelsDataChanged();
             }
         }
 
         //protection to run one at a time.
         private bool _gettingArchivesFromDatabaseAndCaching = false;
-        internal async Task GetArchivesChaptersFromDatabaseAndCache()
+        internal async Task GetArchiveModelsFromDatabaseAndCache()
         {
             if (_gettingArchivesFromDatabaseAndCaching == false)
             {
                 _gettingArchivesFromDatabaseAndCaching = true;
-                _archives = await _httpClient.GetFromJsonAsync<List<Archive>>(APIEndpoints.s_archives);
+                _archiveModels = await _httpClient.GetFromJsonAsync<List<ArchiveModel>>(APIEndpoints.s_archiveModels);
                 _gettingArchivesFromDatabaseAndCaching = false;
             }
         }
 
-        internal event Action OnArchivesDataChanged;
+        internal event Action OnArchiveModelsDataChanged;
 
-        private void NotifyArchivesDataChanged() => OnArchivesDataChanged?.Invoke();
+        private void NotifyArchiveModelsDataChanged() => OnArchiveModelsDataChanged?.Invoke();
 
     }
 }

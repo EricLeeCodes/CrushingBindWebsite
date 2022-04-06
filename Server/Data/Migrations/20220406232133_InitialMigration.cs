@@ -9,7 +9,7 @@ namespace Server.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Archives",
+                name: "ArchiveModels",
                 columns: table => new
                 {
                     ArchiveId = table.Column<int>(type: "INTEGER", nullable: false)
@@ -19,29 +19,29 @@ namespace Server.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Archives", x => x.ArchiveId);
+                    table.PrimaryKey("PK_ArchiveModels", x => x.ArchiveId);
                 });
 
             migrationBuilder.InsertData(
-                table: "Archives",
+                table: "ArchiveModels",
                 columns: new[] { "ArchiveId", "ArchiveChapterNumber", "ArchiveImagePath" },
-                values: new object[] { 1, "Chapter 1", "uploads/placeholder.jpg" });
+                values: new object[] { 1, "Chapter 1", "uploads/Chapter_1_Thumbnail.png" });
 
             migrationBuilder.InsertData(
-                table: "Archives",
+                table: "ArchiveModels",
                 columns: new[] { "ArchiveId", "ArchiveChapterNumber", "ArchiveImagePath" },
-                values: new object[] { 2, "Chapter 2", "uploads/placeholder.jpg" });
+                values: new object[] { 2, "Chapter 2", "uploads/Chapter_2_Thumbnail.png" });
 
             migrationBuilder.InsertData(
-                table: "Archives",
+                table: "ArchiveModels",
                 columns: new[] { "ArchiveId", "ArchiveChapterNumber", "ArchiveImagePath" },
-                values: new object[] { 3, "Chapter 3", "uploads/placeholder.jpg" });
+                values: new object[] { 3, "Chapter 3", "uploads/Chapter_3_Thumbnail.png" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Archives");
+                name: "ArchiveModels");
         }
     }
 }

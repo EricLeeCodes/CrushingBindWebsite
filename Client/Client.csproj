@@ -19,8 +19,4 @@
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="wwwroot\assets\img\TempImages\Chapter_1_Thumbnail.png" />
-  </ItemGroup>
-
 </Project>

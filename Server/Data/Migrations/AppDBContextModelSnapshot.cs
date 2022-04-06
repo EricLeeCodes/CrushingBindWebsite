@@ -16,7 +16,7 @@ namespace Server.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.3");
 
-            modelBuilder.Entity("Shared.Models.Archive", b =>
+            modelBuilder.Entity("Shared.Models.ArchiveModel", b =>
                 {
                     b.Property<int>("ArchiveId")
                         .ValueGeneratedOnAdd()
@@ -34,26 +34,26 @@ namespace Server.Data.Migrations
 
                     b.HasKey("ArchiveId");
 
-                    b.ToTable("Archives");
+                    b.ToTable("ArchiveModels");
 
                     b.HasData(
                         new
                         {
                             ArchiveId = 1,
                             ArchiveChapterNumber = "Chapter 1",
-                            ArchiveImagePath = "uploads/placeholder.jpg"
+                            ArchiveImagePath = "uploads/Chapter_1_Thumbnail.png"
                         },
                         new
                         {
                             ArchiveId = 2,
                             ArchiveChapterNumber = "Chapter 2",
-                            ArchiveImagePath = "uploads/placeholder.jpg"
+                            ArchiveImagePath = "uploads/Chapter_2_Thumbnail.png"
                         },
                         new
                         {
                             ArchiveId = 3,
                             ArchiveChapterNumber = "Chapter 3",
-                            ArchiveImagePath = "uploads/placeholder.jpg"
+                            ArchiveImagePath = "uploads/Chapter_3_Thumbnail.png"
                         });
                 });
 #pragma warning restore 612, 618

@@ -14,7 +14,7 @@ namespace Server.Data.Migrations
                 {
                     ArchiveId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ArchiveImagePath = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    ArchiveThumbnailImagePath = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
                     ArchiveChapterNumber = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false)
                 },
                 constraints: table =>
@@ -24,17 +24,17 @@ namespace Server.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "ArchiveModels",
-                columns: new[] { "ArchiveId", "ArchiveChapterNumber", "ArchiveImagePath" },
+                columns: new[] { "ArchiveId", "ArchiveChapterNumber", "ArchiveThumbnailImagePath" },
                 values: new object[] { 1, "Chapter 1", "uploads/Chapter_1_Thumbnail.png" });
 
             migrationBuilder.InsertData(
                 table: "ArchiveModels",
-                columns: new[] { "ArchiveId", "ArchiveChapterNumber", "ArchiveImagePath" },
+                columns: new[] { "ArchiveId", "ArchiveChapterNumber", "ArchiveThumbnailImagePath" },
                 values: new object[] { 2, "Chapter 2", "uploads/Chapter_2_Thumbnail.png" });
 
             migrationBuilder.InsertData(
                 table: "ArchiveModels",
-                columns: new[] { "ArchiveId", "ArchiveChapterNumber", "ArchiveImagePath" },
+                columns: new[] { "ArchiveId", "ArchiveChapterNumber", "ArchiveThumbnailImagePath" },
                 values: new object[] { 3, "Chapter 3", "uploads/Chapter_3_Thumbnail.png" });
         }
 

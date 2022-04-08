@@ -14,10 +14,12 @@ namespace Shared.Models
 
         [Required]
         [MaxLength(256)]
-        public string ArchiveImagePath { get; set; }
+        public string ArchiveThumbnailImagePath { get; set; }
 
         [Required]
         [MaxLength(128)]
         public string ArchiveChapterNumber { get; set; }
+
+        public List<Post> Posts { get; set; }
     }
 }

@@ -22,7 +22,7 @@ namespace Server.Data
                 categoriesToSeed[i - 1] = new ArchiveModel
                 {
                     ArchiveId = i,
-                    ArchiveImagePath = $"uploads/Chapter_{i}_Thumbnail.png",
+                    ArchiveThumbnailImagePath = $"uploads/Chapter_{i}_Thumbnail.png",
                     ArchiveChapterNumber = $"Chapter {i}"
                 };
             }

@@ -27,7 +27,7 @@ namespace Server.Data.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ArchiveImagePath")
+                    b.Property<string>("ArchiveThumbnailImagePath")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
@@ -41,19 +41,19 @@ namespace Server.Data.Migrations
                         {
                             ArchiveId = 1,
                             ArchiveChapterNumber = "Chapter 1",
-                            ArchiveImagePath = "uploads/Chapter_1_Thumbnail.png"
+                            ArchiveThumbnailImagePath = "uploads/Chapter_1_Thumbnail.png"
                         },
                         new
                         {
                             ArchiveId = 2,
                             ArchiveChapterNumber = "Chapter 2",
-                            ArchiveImagePath = "uploads/Chapter_2_Thumbnail.png"
+                            ArchiveThumbnailImagePath = "uploads/Chapter_2_Thumbnail.png"
                         },
                         new
                         {
                             ArchiveId = 3,
                             ArchiveChapterNumber = "Chapter 3",
-                            ArchiveImagePath = "uploads/Chapter_3_Thumbnail.png"
+                            ArchiveThumbnailImagePath = "uploads/Chapter_3_Thumbnail.png"
                         });
                 });
 #pragma warning restore 612, 618

@@ -21,5 +21,6 @@ namespace Shared.Models
         public string ArchiveChapterNumber { get; set; }
 
         public List<Post> Posts { get; set; }
+
     }
 }

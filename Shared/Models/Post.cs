@@ -18,11 +18,19 @@ namespace Shared.Models
 
         [Required]
         [MaxLength(256)]
+        public string IntroBorder { get; set; }
+
+        [Required]
+        [MaxLength(256)]
         public string ArchiveThumbnailImagePath { get; set; }
 
         [Required]
         [MaxLength(65536)]
         public string Content { get; set; }
+
+        [Required]
+        [MaxLength(32)]
+        public string PublishDate { get; set; }
 
         [Required]
         [MaxLength(256)]

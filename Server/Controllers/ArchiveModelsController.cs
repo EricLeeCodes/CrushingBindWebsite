@@ -11,13 +11,17 @@ namespace Server.Controllers
     public class ArchiveModelsController : ControllerBase
     {
         private readonly AppDBContext _appDBContext;
+        private readonly IWebHostEnvironment _webHostEvnironment;
 
-        public ArchiveModelsController(AppDBContext appDBContext)
+        public ArchiveModelsController(AppDBContext appDBContext, IWebHostEnvironment webHostEvnironment)
         {
             _appDBContext = appDBContext;
+            _webHostEvnironment = webHostEvnironment;
         }
 
-        #region CRUD operations
+
+
+        #region GET
 
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -58,10 +62,153 @@ namespace Server.Controllers
         }
 
 
+
+
         #endregion
 
+        #region POST
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] ArchiveModel archiveToCreate)
+        {
+            try
+            {
+                if (archiveToCreate == null)
+                {
+                    return BadRequest(ModelState);
+                }           
+
+                if (ModelState.IsValid == false)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                //Does the actual creating
+                await _appDBContext.ArchiveModels.AddAsync(archiveToCreate);
+
+                bool changesPersistedToDatabase = await PersistChangesToDatabase();
+
+                if (changesPersistedToDatabase == false)
+                {
+                    return StatusCode(500, $"Something went wrong on our side. Please contact the administrator.");
+                }
+                else
+                {
+                    return Created("Create", archiveToCreate);
+                }
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(500, $"Something went wrong on our side. Please contact the administrator. " +
+                    $"Error message: {e.Message}.");
+            }
+        }
+
+        #endregion
+
+        #region PUT
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] ArchiveModel updatedArchiveModel)
+        {
+            try
+            {
+                if (id < 1 || updatedArchiveModel == null || id != updatedArchiveModel.ArchiveId)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                bool exists = await _appDBContext.ArchiveModels.AnyAsync(archiveModel => archiveModel.ArchiveId == id);
+
+                if (exists == false)
+                {
+                    return NotFound();
+                }
+
+                if (ModelState.IsValid == false)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                _appDBContext.ArchiveModels.Update(updatedArchiveModel);
+
+                bool changesPersistedToDatabase = await PersistChangesToDatabase();
+
+                if (changesPersistedToDatabase == false)
+                {
+                    return StatusCode(500, $"Something went wrong on our side. Please contact the administrator.");
+                }
+                else
+                {
+                    return NoContent();
+                }
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(500, $"Something went wrong on our side. Please contact the administrator. " +
+                    $"Error message: {e.Message}.");
+            }
+        }
+        #endregion
+
+        #region DELETE
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                if (id < 1)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                bool exists = await _appDBContext.ArchiveModels.AnyAsync(archiveModel => archiveModel.ArchiveId == id);
+
+                if (exists == false)
+                {
+                    return NotFound();
+                }
+
+                if (ModelState.IsValid == false)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                ArchiveModel archiveToDelete = await GetArchiveByArchiveId(id, false);
+
+                if (archiveToDelete.ArchiveThumbnailImagePath != "uploads/placeholder.jpg")
+                {
+                    string fileName = archiveToDelete.ArchiveThumbnailImagePath.Split('/').Last();
+
+                    System.IO.File.Delete($"{_webHostEvnironment.ContentRootPath}\\wwwroot\\uploads\\{fileName}");
+                }
+
+                _appDBContext.ArchiveModels.Remove(archiveToDelete);
+
+                bool changesPersistedToDatabase = await PersistChangesToDatabase();
+
+                if (changesPersistedToDatabase == false)
+                {
+                    return StatusCode(500, $"Something went wrong on our side. Please contact the administrator.");
+                }
+                else
+                {
+                    return NoContent();
+                }
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(500, $"Something went wrong on our side. Please contact the administrator. " +
+                    $"Error message: {e.Message}.");
+            }
+        }
 
 
+
+        #endregion
 
         #region Utility methods
 

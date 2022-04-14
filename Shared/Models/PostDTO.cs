@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shared.Models
 {
-    public class Post
+    public class PostDTO
     {
         [Key]
         public int PostId { get; set; }
@@ -28,19 +28,15 @@ namespace Shared.Models
         [MaxLength(65536)]
         public string Content { get; set; }
 
-        [Required]
-        [MaxLength(32)]
-        public string PublishDate { get; set; }
 
-        [Required] 
+        [Required]
         public bool Published { get; set; }
 
 
         [Required]
-        [MaxLength(256)]
         public int ArchiveId { get; set; }
 
-        public ArchiveModel ArchiveModel { get; set; }
+
 
     }
 }

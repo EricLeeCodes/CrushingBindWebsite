@@ -1,8 +1,10 @@
 ﻿@page "/admin"
+@using Client.Components.Admin
+
 
 <main class="admin-area-main">
 
-    @* Sidebar *@
+    <Sidebar/>
 
     <div class="admin-area-content container-fluid bg-white">
         <div class="row g-0">
@@ -19,7 +21,7 @@
                                 <img src="assets/img/admincards/categories-card-background.jpg" 
                                      class="card-img" alt="Overview Archive Models card background"/>
                                 <div class="card-img-overlay d-flex flex-column">
-                                    <h1 class="card-title fw-bold"> Archive Models </h1>
+                                    <h1 class="card-title fw-bold"> Archives </h1>
                                     <h4 class="card-text">3 archives exist.</h4>
                                     <div class="d-flex align-items-end justify-content-end flex-grow-1">
                                         <i class="fas fa-arrow-right ms-4 h1"></i>
@@ -35,7 +37,7 @@
                                 <img src="assets/img/admincards/posts-card-background.jpg" 
                                      class="card-img" alt="Overview Posts card background"/>
                                 <div class="card-img-overlay d-flex flex-column">
-                                    <h1 class="card-title fw-bold"> Posts </h1>
+                                    <h1 class="card-title fw-bold"> Novel Posts </h1>
                                     <h4 class="card-text">6 posts exist.</h4>
                                     <div class="d-flex align-items-end justify-content-end flex-grow-1">
                                         <i class="fas fa-arrow-right ms-4 h1"></i>

@@ -1,0 +1,95 @@
+﻿@page "/admin/archives/create"
+@using System.Net;
+@using Client.Components.Admin
+@inject HttpClient HttpClient
+@inject InMemoryDatabaseCache InMemoryDatabaseCache
+
+
+<main class="admin-area-main">
+    <Sidebar />
+
+    <div class="admin-area-content container-fluid bg-white">
+        <div class="row g-0">
+            <div class="col">
+
+                <h1 class="mb-4">@(_createSuccessful ? "Success! Go back to see the created archive." : "Create Archive")</h1>
+                @if (_attemptingToCreate == true)
+                {
+                    <h1>Creating Archive...</h1>
+                }
+                else if (_createSuccessful == false && _attemptingToCreate == false)
+                {
+                    <EditForm Model="_archiveToCreate" OnValidSubmit="CreateArchive">
+                        <DataAnnotationsValidator />
+
+                        <div class="form-group mb-5">
+                            <label for="archiveChapter"> Archive Chapter Label </label>
+                            <InputText @bind-Value="_archiveToCreate.ArchiveChapterNumber" class="form-control" id="archiveChapter"></InputText>
+                        </div>
+
+                        <div class="form-group mb-5">
+                            <label for="thumbnailImage"> Thumbnail Image </label>
+
+                            <img src="@($"{APIEndpoints.ServerBaseUrl}/{_archiveToCreate.ArchiveThumbnailImagePath}")"
+                             class="admin-crud-form-thumbnail-image center" alt="Archive thumbnail image" />
+
+                            <br />
+
+                            <InputFile class="form-control mt-4" id="thumbnailImage" />
+                        </div>
+
+                        <ValidationSummary />
+
+                        <button class="btn btn-success shadow d-block mt-5 md-f-size-1-5" type="submit">
+                            <i class="far fa-save"></i> Save
+                        </button>
+
+                    </EditForm>
+                }
+
+
+                <a href="/admin/archives" class="btn btn-primary shadow mt-5 md-f-size-1-5">
+                    <i class="fas fa-arrow-left"></i> Back to all archives
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+</main>
+
+
+@code
+{
+    private ArchiveModel _archiveToCreate = new ArchiveModel()
+        {
+            ArchiveThumbnailImagePath = "uploads/placeholder.jpg",
+            Posts = new List<Post>()
+        };
+
+    private bool _attemptingToCreate = false;
+    private bool _attemptToCreateFailed = false;
+    private bool _createSuccessful = false;
+
+    private async Task CreateArchive()
+    {
+        _attemptingToCreate = true;
+
+        HttpResponseMessage response = await HttpClient.PostAsJsonAsync<ArchiveModel>(APIEndpoints.s_archiveModels, _archiveToCreate);
+
+        if (response.StatusCode == HttpStatusCode.Created)
+        {
+            ArchiveModel addedArchive = await response.Content.ReadFromJsonAsync<ArchiveModel>();
+            InMemoryDatabaseCache.ArchiveModels.Add(addedArchive);
+
+            _createSuccessful = true;
+        }
+        else
+        {
+            _attemptingToCreate = true;
+        }
+
+        _attemptingToCreate = false;
+
+    }
+}

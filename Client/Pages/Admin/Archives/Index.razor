@@ -17,9 +17,7 @@
 
                     @if (InMemoryDatabaseCache.ArchiveModels == null)
                     {
-                        <div class="spinner-grow text-secondary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
+                        <LoadingHeart/>
                     }
                     else
                     {

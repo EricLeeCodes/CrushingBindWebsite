@@ -28,6 +28,16 @@ namespace Client.Services
             }
         }
 
+        internal async Task<ArchiveModel> GetArchiveByArchiveId(int archiveId)
+        {
+            if(_archiveModels == null)
+            {
+                await GetArchiveModelsFromDatabaseAndCache();
+            }
+
+            return _archiveModels.First(archive => archive.ArchiveId == archiveId);
+        }
+
         //protection to run one at a time.
         private bool _gettingArchivesFromDatabaseAndCaching = false;
         internal async Task GetArchiveModelsFromDatabaseAndCache()

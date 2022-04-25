@@ -1,0 +1,182 @@
+﻿@page "/admin/archives/update/{ArchiveId:int}"
+@using System.Net;
+@using Client.Components.Admin
+@inject HttpClient HttpClient
+@inject InMemoryDatabaseCache InMemoryDatabaseCache
+
+
+<main class="admin-area-main">
+    <Sidebar />
+
+    <div class="admin-area-content container-fluid bg-white">
+        <div class="row g-0">
+            <div class="col">
+
+                <h1 class="mb-4">Update Archive</h1>
+                @if (_archiveToUpdate == null || _attemptingToUpdate == true)
+                {
+                    <LoadingHeart />
+                }
+                else
+                {
+                    <EditForm Model="_archiveToUpdate" OnValidSubmit="UpdateArchive">
+                        <DataAnnotationsValidator />
+
+                        <div class="form-group mb-5">
+                            <label for="archiveChapter"> Archive Chapter Label (Chapter 1, Chapter 2, etc.)</label>
+                            <InputText @bind-Value="_archiveToUpdate.ArchiveChapterNumber" class="form-control" id="archiveChapter"></InputText>
+                        </div>
+
+                        <div class="form-group mb-5">
+                            <label for="thumbnailImage"> Thumbnail Image </label>
+
+                            @if (_attemptingToUploadImage == true)
+                            {
+                                <LoadingHeart />
+                            }
+                            else if (_attemptToUploadFailed == true)
+                            {
+                                <h4 class="text-danger">Failed to upload image. @_reasonImageUploadFailed</h4>
+                            }
+                            else
+                            {
+                                <img src="@($"{APIEndpoints.ServerBaseUrl}/{_archiveToUpdate.ArchiveThumbnailImagePath}")"
+                             class="admin-crud-form-thumbnail-image center" alt="Archive thumbnail image" />
+                            }
+
+                            <br />
+
+                            <InputFile OnChange="HandleUploadedImage" class="form-control mt-4" id="thumbnailImage" />
+                        </div>
+
+                        <ValidationSummary />
+
+                        <button class="btn btn-success shadow d-block mt-5 md-f-size-1-5" type="submit">
+                            <i class="far fa-save"></i> Save
+                        </button>
+
+                        <a href="/admin/archives" class="btn btn-primary shadow mt-5 md-f-size-1-5">
+                            <i class="fas fa-arrow-left"></i> Back to all archives
+                        </a>
+
+                    </EditForm>
+                }
+
+                <div class="position-fixed bottom-0 end-5 z-index-5">
+
+                    @if( _updateSuccessful == true)
+                    {
+                        <Toast IsError="false" ToastTitle="Update successful"
+                            ToastBody="Your changes have been saved to the database." 
+                            ParentMethodToCallOnClickBtnClose="() => _attemptToUpdateFailed = false" />
+                    }
+
+                    @if( _attemptToUpdateFailed == true)
+                    {
+                        <Toast IsError="true" ToastTitle="Update failed"
+                            ToastBody="Update failed. Please try again and if the issue persists contact the administrator." 
+                            ParentMethodToCallOnClickBtnClose="() => _attemptToUpdateFailed = false" />
+                    }                   
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+
+@code
+{
+    [Parameter] public int ArchiveId { get; set; }
+    private ArchiveModel _archiveToUpdate = null ;
+
+    protected async override Task OnParametersSetAsync()
+    {
+        _archiveToUpdate = await InMemoryDatabaseCache.GetArchiveByArchiveId(ArchiveId);
+    }
+
+    private bool _attemptingToUpdate = false;
+    private bool _attemptToUpdateFailed = false;
+    private bool _updateSuccessful = false;
+
+    private async Task UpdateArchive()
+    {
+        _attemptingToUpdate = true;
+
+        HttpResponseMessage response = await HttpClient.PutAsJsonAsync<ArchiveModel>($"{APIEndpoints.s_archiveModels}/{ArchiveId}", _archiveToUpdate);
+
+        if (response.StatusCode == HttpStatusCode.NoContent)
+        {
+            ArchiveModel unupdatedArchiveInList = InMemoryDatabaseCache.ArchiveModels.Single(archive => archive.ArchiveId == ArchiveId);
+            UtilityFunctions.CopyObjectProperties(_archiveToUpdate, unupdatedArchiveInList);
+
+            _updateSuccessful = true;
+        }
+        else
+        {
+            _attemptingToUpdate = true;
+        }
+
+        _attemptingToUpdate = false;
+
+    }
+
+
+    private bool _attemptingToUploadImage = false;
+    private bool _attemptToUploadFailed = false;
+    private string _reasonImageUploadFailed = null;
+
+    private async Task HandleUploadedImage(InputFileChangeEventArgs e)
+    {
+        _attemptingToUploadImage = true;
+
+        if (e.File.ContentType != "image/jpeg" && e.File.ContentType != "image/png")
+        {
+            _reasonImageUploadFailed = "Please only upload JPEG, JPG, or PNG file.";
+            _attemptToUpdateFailed = true;
+        }
+
+        //31457280 is 30 megabytes
+        else if (e.File.Size >= 31457280)
+        {
+            _reasonImageUploadFailed = "Please only upload images that are smaller than 30 MegaBytes (MB).";
+            _attemptToUploadFailed = true;
+        }
+        else
+        {
+            IBrowserFile uploadedImageFile = e.File;
+
+            byte[] imageAsByteArray = new byte[uploadedImageFile.Size];
+
+            //Fills the contents of the image byte array.
+            await uploadedImageFile.OpenReadStream(31457280).ReadAsync(imageAsByteArray);
+            string byteString = Convert.ToBase64String(imageAsByteArray);
+
+            UploadedImage uploadedImage = new UploadedImage()
+                {
+                    // Subtract 4 to get  .jpg, .png, etc.
+                    NewImageFileExtension = uploadedImageFile.Name.Substring(uploadedImageFile.Name.Length - 4),
+                    NewImageBase64Content = byteString,
+                    OldImagePath = string.Empty
+                };
+
+            HttpResponseMessage response = await HttpClient.PostAsJsonAsync<UploadedImage>(APIEndpoints.s_imageUpload, uploadedImage);
+
+            if (response.StatusCode == HttpStatusCode.Updated)
+            {
+                _archiveToUpdate.ArchiveThumbnailImagePath = await response.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                _reasonImageUploadFailed = $"Something went wrong with the request to the server. Server response code: {response.StatusCode}. Server reason: {response.ReasonPhrase}.";
+                _attemptToUploadFailed = true;
+            }
+        }
+
+        _attemptingToUploadImage = false;
+        StateHasChanged();
+    }
+
+
+}

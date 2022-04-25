@@ -12,10 +12,11 @@
     </div>
 </div>
 
-@code {
+@code 
+{
     [Parameter] public bool IsError { get; set; }
-    [Parameter] public bool ToastTitle { get; set; }
-    [Parameter] public bool ToastBody { get; set; }
+    [Parameter] public string ToastTitle { get; set; }
+    [Parameter] public string ToastBody { get; set; }
     [Parameter] public EventCallback ParentMethodToCallOnClickBtnClose { get; set; }
 
     private string _showClass = string.Empty;

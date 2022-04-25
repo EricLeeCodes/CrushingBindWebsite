@@ -1,6 +1,8 @@
 ﻿@page "/admin/archives"
 @using Client.Components.Admin
+@using System.Net
 @inject InMemoryDatabaseCache InMemoryDatabaseCache
+@inject HttpClient HttpClient
 
 
 <main class="admin-area-main">
@@ -15,7 +17,7 @@
                 <hr />
                 <br />
 
-                    @if (InMemoryDatabaseCache.ArchiveModels == null)
+                    @if (InMemoryDatabaseCache.ArchiveModels == null || _attemptingToDeleteAnArchive == true)
                     {
                         <LoadingHeart/>
                     }
@@ -69,7 +71,7 @@
 
                                                    <br/>
 
-                                                   <button class="btn btn-danger shadow md-f-size-1-5 align-self-center btn-width-50">
+                                                   <button @onclick="(() => DeleteArchive(archive))" class="btn btn-danger shadow md-f-size-1-5 align-self-center btn-width-50">
                                                        <i class="fas fa-trash"></i> Delete
                                                    </button>
                                                 </div>
@@ -81,6 +83,24 @@
                         </div>
                     }
                 }
+
+                <div class="position-fixed bottom-0 end-5 z-index-5">
+                    
+                    @if (_successfullyDeletedAnArchive == true)
+                    {
+                        <Toast IsError="false" ToastTitle="Successfully deleted a category."
+                            ToastBody="The archive has been removed from the database."
+                            ParentMethodToCallOnClickBtnClose="() => _successfullyDeletedAnArchive = false"/>
+                    }
+                    @if (_unsuccessfullyTriedToDeleteAnArchive == true)
+                    {
+                        <Toast IsError="true" ToastTitle="Delete failed."
+                            ToastBody="@($"The reason is \"{_reasonUnsuccessfullyTriedToDeleteAnArchive}\" Please try again and if the issue persists contact the administrator.")"
+                            ParentMethodToCallOnClickBtnClose="() => _successfullyDeletedAnArchive = false"/>
+                    }
+
+
+                </div>
 
             </div>
         </div>
@@ -104,4 +124,69 @@
 
 
     public void Dispose() => InMemoryDatabaseCache.OnArchiveModelsDataChanged -= StateHasChanged;
+
+    private bool _attemptingToDeleteAnArchive = false;
+    private bool _successfullyDeletedAnArchive = false;
+    private bool _unsuccessfullyTriedToDeleteAnArchive = false;
+    private string _reasonUnsuccessfullyTriedToDeleteAnArchive = null;
+    private async void DeleteArchive(ArchiveModel archiveToDelete)
+    {
+        if(archiveToDelete.Posts != null && archiveToDelete.Posts.Count != 0)
+        {
+            string postTitlesThatMustBeDeletedFirst = string.Empty;
+
+            for (int i = 0; i < archiveToDelete.Posts.Count; i++ )
+            {
+                if (i == archiveToDelete.Posts.Count - 1)
+                {
+                    //Last iteration
+                    postTitlesThatMustBeDeletedFirst += $"\"{archiveToDelete.Posts[i].Title}\"";
+                }
+                else if (i == archiveToDelete.Posts.Count - 2)
+                {
+                    //Second Last iteration
+                    postTitlesThatMustBeDeletedFirst += $"\"{archiveToDelete.Posts[i].Title}\" and ";
+                }
+                else 
+                {
+                    //Other iterations
+                    postTitlesThatMustBeDeletedFirst += $"\"{archiveToDelete.Posts[i].Title}\", ";
+                }
+            }
+
+            _reasonUnsuccessfullyTriedToDeleteAnArchive = $"The archive still has psots in it. Please delete the posts titled {postTitlesThatMustBeDeletedFirst} first";
+            _unsuccessfullyTriedToDeleteAnArchive = true;
+
+
+        }
+
+        else
+        {
+            _attemptingToDeleteAnArchive = true;
+
+            HttpResponseMessage response = await HttpClient.DeleteAsync($"{APIEndpoints.s_archiveModels}/{archiveToDelete.ArchiveId}");
+
+            if (response.StatusCode == HttpStatusCode.NoContent)
+            {
+                if(InMemoryDatabaseCache.ArchiveModels.Remove(archiveToDelete))
+                {
+                    _successfullyDeletedAnArchive = true;
+                }
+                else
+                {
+                    _reasonUnsuccessfullyTriedToDeleteAnArchive = "An unexpected error has occured. Please try again and if the issue persists, contact the administrator.";
+                    _unsuccessfullyTriedToDeleteAnArchive = true;
+                }
+            }
+            else
+            {
+                _reasonUnsuccessfullyTriedToDeleteAnArchive = $"The API didn't return an HttpStatusCode. NoContent status code. Instead the API returned the status code {response.StatusCode} and gave the following reason for failure: {response.ReasonPhrase}";
+                _unsuccessfullyTriedToDeleteAnArchive = true;
+            }
+        }
+
+        _attemptingToDeleteAnArchive = false;
+        StateHasChanged();
+    }
+
 }

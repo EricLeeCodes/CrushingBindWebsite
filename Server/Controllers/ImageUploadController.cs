@@ -28,9 +28,12 @@ namespace Server.Controllers
 
                 if (uploadedImage.OldImagePath != string.Empty)
                 {
-                    string oldUploadedImageFileName = uploadedImage.OldImagePath.Split('/').Last();
+                    if (uploadedImage.OldImagePath != "uploads/placeholder.jpg")
+                    {
+                        string oldUploadedImageFileName = uploadedImage.OldImagePath.Split('/').Last();
 
-                    System.IO.File.Delete($"{_webHostEnvironment.ContentRootPath}\\wwwroot\\uploads\\{oldUploadedImageFileName}");
+                        System.IO.File.Delete($"{_webHostEnvironment.ContentRootPath}\\wwwroot\\uploads\\{oldUploadedImageFileName}");
+                    }
                 }
 
                 string guid = Guid.NewGuid().ToString();
@@ -47,7 +50,7 @@ namespace Server.Controllers
                 string relativeFilePathWithoutTrailingSlashes = $"uploads/{imageFileName}";
                 return Created("Create", relativeFilePathWithoutTrailingSlashes);
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
 
                 return StatusCode(500, $"Something went wrong on our side. Please contact the administrator: {e.Message}");

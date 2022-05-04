@@ -93,7 +93,7 @@
 
     protected async override Task OnParametersSetAsync()
     {
-        _archiveToUpdate = await InMemoryDatabaseCache.GetArchiveByArchiveId(ArchiveId);
+        _archiveToUpdate = await InMemoryDatabaseCache.GetArchiveByArchiveId(ArchiveId, false);
     }
 
     private bool _attemptingToUpdate = false;

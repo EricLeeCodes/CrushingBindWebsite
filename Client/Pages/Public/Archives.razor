@@ -43,7 +43,7 @@
 
         if (InMemoryDatabaseCache.ArchiveModels == null)
         {
-            await InMemoryDatabaseCache.GetArchiveModelsFromDatabaseAndCache();
+            await InMemoryDatabaseCache.GetArchiveModelsFromDatabaseAndCache(true);
         }
     }
 

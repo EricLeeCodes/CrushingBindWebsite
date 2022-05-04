@@ -27,7 +27,7 @@
                             <i class="fas fa-plus"></i> Create Archive
                         </a>
 
-                        <button @onclick="() => InMemoryDatabaseCache.GetArchiveModelsFromDatabaseAndCache()"
+                        <button @onclick="() => InMemoryDatabaseCache.GetArchiveModelsFromDatabaseAndCache(true)"
                             class="btn btn-primary shadow md-f-size-1-5">
                             <i class="fas fa-sync"></i> Refresh data
                         </button>
@@ -88,7 +88,7 @@
                     
                     @if (_successfullyDeletedAnArchive == true)
                     {
-                        <Toast IsError="false" ToastTitle="Successfully deleted a category."
+                        <Toast IsError="false" ToastTitle="Successfully deleted an archive."
                             ToastBody="The archive has been removed from the database."
                             ParentMethodToCallOnClickBtnClose="() => _successfullyDeletedAnArchive = false"/>
                     }
@@ -118,7 +118,7 @@
 
         if (InMemoryDatabaseCache.ArchiveModels == null)
         {
-            await InMemoryDatabaseCache.GetArchiveModelsFromDatabaseAndCache();
+            await InMemoryDatabaseCache.GetArchiveModelsFromDatabaseAndCache(true);
         }
     }
 

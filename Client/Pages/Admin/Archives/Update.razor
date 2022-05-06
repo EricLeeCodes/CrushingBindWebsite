@@ -109,9 +109,6 @@
         if (response.StatusCode == HttpStatusCode.NoContent)
         {
             ArchiveModel unupdatedArchiveInList = InMemoryDatabaseCache.ArchiveModels.Single(archive => archive.ArchiveId == ArchiveId);
-
-            //Copies all values from updated archives stored in a variable in the update component to the unupdated archive stored in the InMemoryDatabaseCache
-            //Done to reduce API calls
             UtilityFunctions.CopyObjectProperties(_archiveToUpdate, unupdatedArchiveInList);
 
             _updateSuccessful = true;
@@ -166,7 +163,7 @@
 
             HttpResponseMessage response = await HttpClient.PostAsJsonAsync<UploadedImage>(APIEndpoints.s_imageUpload, uploadedImage);
 
-            if (response.StatusCode == HttpStatusCode.Created)
+            if (response.StatusCode == HttpStatusCode.Updated)
             {
                 _archiveToUpdate.ArchiveThumbnailImagePath = await response.Content.ReadAsStringAsync();
             }

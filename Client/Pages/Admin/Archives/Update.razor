@@ -163,7 +163,7 @@
 
             HttpResponseMessage response = await HttpClient.PostAsJsonAsync<UploadedImage>(APIEndpoints.s_imageUpload, uploadedImage);
 
-            if (response.StatusCode == HttpStatusCode.Updated)
+            if (response.StatusCode == HttpStatusCode.Created)
             {
                 _archiveToUpdate.ArchiveThumbnailImagePath = await response.Content.ReadAsStringAsync();
             }

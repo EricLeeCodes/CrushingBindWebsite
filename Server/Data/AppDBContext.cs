@@ -88,6 +88,7 @@ namespace Server.Data
                     ArchiveThumbnailImagePath = "uploads/placeholder.jpg",
                     IntroBorder = "uploads/intro_border.png",
                     Title = postTitle,
+                    Excerpt = "This is an excerpt example",
                     Content = string.Empty,
                     PublishDate = DateTime.UtcNow.ToString("MM/dd/yyyy"),
                     Published = true,

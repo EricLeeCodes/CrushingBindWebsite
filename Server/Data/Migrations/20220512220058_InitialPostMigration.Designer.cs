@@ -10,13 +10,13 @@ using Server.Data;
 namespace Server.Data.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20220408235038_InitialPostModel")]
-    partial class InitialPostModel
+    [Migration("20220512220058_InitialPostMigration")]
+    partial class InitialPostMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.3");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
 
             modelBuilder.Entity("Shared.Models.ArchiveModel", b =>
                 {
@@ -79,6 +79,11 @@ namespace Server.Data.Migrations
                         .HasMaxLength(65536)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Excerpt")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("IntroBorder")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -90,7 +95,6 @@ namespace Server.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("Published")
-                        .HasMaxLength(256)
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
@@ -111,8 +115,9 @@ namespace Server.Data.Migrations
                             ArchiveId = 1,
                             ArchiveThumbnailImagePath = "uploads/placeholder.jpg",
                             Content = "",
+                            Excerpt = "This is an excerpt example",
                             IntroBorder = "uploads/intro_border.png",
-                            PublishDate = "04/08/2022",
+                            PublishDate = "05/12/2022",
                             Published = true,
                             Title = "First post"
                         },
@@ -122,8 +127,9 @@ namespace Server.Data.Migrations
                             ArchiveId = 2,
                             ArchiveThumbnailImagePath = "uploads/placeholder.jpg",
                             Content = "",
+                            Excerpt = "This is an excerpt example",
                             IntroBorder = "uploads/intro_border.png",
-                            PublishDate = "04/08/2022",
+                            PublishDate = "05/12/2022",
                             Published = true,
                             Title = "Second post"
                         },
@@ -133,8 +139,9 @@ namespace Server.Data.Migrations
                             ArchiveId = 3,
                             ArchiveThumbnailImagePath = "uploads/placeholder.jpg",
                             Content = "",
+                            Excerpt = "This is an excerpt example",
                             IntroBorder = "uploads/intro_border.png",
-                            PublishDate = "04/08/2022",
+                            PublishDate = "05/12/2022",
                             Published = true,
                             Title = "Third post"
                         },
@@ -144,8 +151,9 @@ namespace Server.Data.Migrations
                             ArchiveId = 1,
                             ArchiveThumbnailImagePath = "uploads/placeholder.jpg",
                             Content = "",
+                            Excerpt = "This is an excerpt example",
                             IntroBorder = "uploads/intro_border.png",
-                            PublishDate = "04/08/2022",
+                            PublishDate = "05/12/2022",
                             Published = true,
                             Title = "Fourth post"
                         },
@@ -155,8 +163,9 @@ namespace Server.Data.Migrations
                             ArchiveId = 2,
                             ArchiveThumbnailImagePath = "uploads/placeholder.jpg",
                             Content = "",
+                            Excerpt = "This is an excerpt example",
                             IntroBorder = "uploads/intro_border.png",
-                            PublishDate = "04/08/2022",
+                            PublishDate = "05/12/2022",
                             Published = true,
                             Title = "Fifth post"
                         },
@@ -166,8 +175,9 @@ namespace Server.Data.Migrations
                             ArchiveId = 3,
                             ArchiveThumbnailImagePath = "uploads/placeholder.jpg",
                             Content = "",
+                            Excerpt = "This is an excerpt example",
                             IntroBorder = "uploads/intro_border.png",
-                            PublishDate = "04/08/2022",
+                            PublishDate = "05/12/2022",
                             Published = true,
                             Title = "Sixth post"
                         });

@@ -8,7 +8,7 @@
         internal const string ServerBaseUrl = "https://crushingbindserver.azurewebsites.net";
 #endif
         internal readonly static string s_archiveModels = $"{ServerBaseUrl}/api/archivemodels";
-        internal readonly static string s_archivesWithPosts = $"{ServerBaseUrl}/api/archives/withposts";
+        internal readonly static string s_archivesWithPosts = $"{ServerBaseUrl}/api/archivemodels/withposts";
         internal readonly static string s_posts = $"{ServerBaseUrl}/api/posts";
         internal readonly static string s_postsDTO = $"{ServerBaseUrl}/api/posts/dto";
         internal readonly static string s_imageUpload = $"{ServerBaseUrl}/api/imageupload";

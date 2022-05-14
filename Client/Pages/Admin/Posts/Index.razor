@@ -24,7 +24,7 @@
                 else
                 {
                     <a href="/admin/posts/create" class="btn btn-success shadow me-5 md-f-size-1-5">
-                        <i class="fas fa-plus"></i> Create Archive
+                        <i class="fas fa-plus"></i> Create Post
                     </a>
 
                     <button @onclick="() => InMemoryDatabaseCache.GetPostsFromDatabaseAndCache()"
@@ -46,11 +46,11 @@
                             <table class="table table-striped table-bordered table-sm">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Archive Chapter Number</th>
-                                        <th scope="col">Thumbnail</th>
+                                        <th scope="col">Chapter Number</th>
                                         <th scope="col">Title</th>
                                         <th scope="col">Intro Border</th>
-                                        <th scope="col">Content</th>
+                                        <th scope="col">Thumbnail</th>
+                                        <th scope="col">Excerpt</th>
                                         <th scope="col">Publish Date</th>
                                         <th scope="col">Actions</th>
                                     </tr>
@@ -62,22 +62,32 @@
                                             <th class="w-8" scope="row">
                                                 <p>@post.ArchiveModel.ArchiveChapterNumber</p>
                                             </th>
+
+
+                                             <td class="w-8" scope="row">
+                                                <p>@post.Title</p>
+                                            </td>
+
+                                            <td class="w-40">
+                                                <img src="@($"{APIEndpoints.ServerBaseUrl}/{post.IntroBorder}")"
+                                         class="admin-index-thumbnail-image center" alt="Intro border image" />
+                                            </td>
+
+
                                             <td class="w-40">
                                                 <img src="@($"{APIEndpoints.ServerBaseUrl}/{post.ArchiveThumbnailImagePath}")"
                                          class="admin-index-thumbnail-image center" alt="Archive thumbnail image" />
                                             </td>
-                                            <td class="w-8" scope="row">
-                                                <p>@post.Title</p>
-                                            </td>
-                                            <td class="w-8" scope="row">
-                                                <p>@post.IntroBorder</p>
-                                            </td>
+
+                                            <td class="w-14">
+												<p>@post.Excerpt</p>
+											</td>
+
                                             <td class="w-14" scope="row">
                                                 <p>@(post.Published ? $"{post.PublishDate} UTC" : "Not published")</p>
                                             </td>
-                                            <td class="w-8" scope="row">
-                                                <p>@post.Content</p>
-                                            </td>
+
+
                                             <td class="w-70">
 
                                                 @if (post.Published == false)
@@ -95,13 +105,11 @@
 
                                                 <br />
                                                 <div class="d-flex flex-column">
-                                                    <a href="/admin/posts/update/@post.PostId"
+                                                    <a href="/admin/posts/update/@post.ArchiveId"
                                            class="btn btn-update shadow md-f-size-1-5 align-self-center btn-width-50">
                                                         <i class="fas fa-edit"></i> Update
                                                     </a>
-
                                                     <br />
-
                                                     <button @onclick="(() => DeletePost(post))" class="btn btn-danger shadow md-f-size-1-5 align-self-center btn-width-50">
                                                         <i class="fas fa-trash"></i> Delete
                                                     </button>
@@ -127,7 +135,7 @@
                     {
                         <Toast IsError="true" ToastTitle="Delete failed."
                            ToastBody="@($"The reason is \"{_reasonUnsuccessfullyTriedToDeleteAPost}\" Please try again and if the issue persists contact the administrator.")"
-                           ParentMethodToCallOnClickBtnClose="() => _successfullyDeletedAPost = false" />
+                           ParentMethodToCallOnClickBtnClose="() => _unsuccessfullyTriedToDeleteAPost = false" />
                     }
 
 
@@ -164,7 +172,7 @@
     {
         _attemptingToDeleteAPost = true;
 
-        HttpResponseMessage response = await HttpClient.DeleteAsync($"{APIEndpoints.s_posts}/{postToDelete.PostId}");
+        HttpResponseMessage response = await HttpClient.DeleteAsync($"{APIEndpoints.s_posts}/{postToDelete.ArchiveId}");
 
         if (response.StatusCode == HttpStatusCode.NoContent)
         {

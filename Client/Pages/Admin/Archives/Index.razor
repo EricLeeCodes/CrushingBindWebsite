@@ -96,7 +96,7 @@
                     {
                         <Toast IsError="true" ToastTitle="Delete failed."
                             ToastBody="@($"The reason is \"{_reasonUnsuccessfullyTriedToDeleteAnArchive}\" Please try again and if the issue persists contact the administrator.")"
-                            ParentMethodToCallOnClickBtnClose="() => _successfullyDeletedAnArchive = false"/>
+                            ParentMethodToCallOnClickBtnClose="() => _unsuccessfullyTriedToDeleteAnArchive = false"/>
                     }
 
 
@@ -154,7 +154,7 @@
                 }
             }
 
-            _reasonUnsuccessfullyTriedToDeleteAnArchive = $"The archive still has psots in it. Please delete the posts titled {postTitlesThatMustBeDeletedFirst} first";
+            _reasonUnsuccessfullyTriedToDeleteAnArchive = $"The archive still has posts in it. Please delete the posts titled {postTitlesThatMustBeDeletedFirst} first";
             _unsuccessfullyTriedToDeleteAnArchive = true;
 
 

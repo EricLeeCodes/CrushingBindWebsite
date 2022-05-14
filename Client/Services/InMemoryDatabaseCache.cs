@@ -98,7 +98,7 @@ namespace Client.Services
                     archivesFromDatabase = await _httpClient.GetFromJsonAsync<List<ArchiveModel>>(APIEndpoints.s_archiveModels);
                 }
 
-                _archiveModels = archivesFromDatabase.OrderByDescending(archive => archive.ArchiveId).ToList();
+                _archiveModels = archivesFromDatabase.OrderBy(archive => archive.ArchiveId).ToList();
 
                 if (withPosts == true)
                 {

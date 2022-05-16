@@ -168,11 +168,12 @@
     private bool _successfullyDeletedAPost = false;
     private bool _unsuccessfullyTriedToDeleteAPost = false;
     private string _reasonUnsuccessfullyTriedToDeleteAPost = null;
+
     private async void DeletePost(Post postToDelete)
     {
         _attemptingToDeleteAPost = true;
 
-        HttpResponseMessage response = await HttpClient.DeleteAsync($"{APIEndpoints.s_posts}/{postToDelete.ArchiveId}");
+        HttpResponseMessage response = await HttpClient.DeleteAsync($"{APIEndpoints.s_posts}/{postToDelete.PostId}");
 
         if (response.StatusCode == HttpStatusCode.NoContent)
         {

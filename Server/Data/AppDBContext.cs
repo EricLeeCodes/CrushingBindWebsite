@@ -82,7 +82,7 @@ namespace Server.Data
                         break;
                 }
 
-                postsToSeed[i - 1] = new Post()
+                postsToSeed[i - 1] = new Post
                 {
                     PostId = i,
                     ArchiveThumbnailImagePath = "uploads/placeholder.jpg",

@@ -44,7 +44,7 @@ namespace Server.Controllers
             return Ok(postDTO);
         }
 
-        //website.com/api/categories/2
+        //website.com/api/posts/2
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -91,7 +91,7 @@ namespace Server.Controllers
                 }
                 else
                 {
-                    return Created("Create", postToCreateDTO);
+                    return Created("Create", postToCreate);
                 }
             }
             catch (Exception e)
@@ -156,11 +156,11 @@ namespace Server.Controllers
 
                 if (changesPersistedToDatabase == false)
                 {
-                    return StatusCode(500, $"Something went wrong on our side. Please contact the administrator.");
+                    return StatusCode(500, "Something went wrong on our side. Please contact the administrator.");
                 }
                 else
                 {
-                    return Created("Create", updatedPostDTO);
+                    return Created("Create", updatedPost);
                 }
 
             }
@@ -246,8 +246,6 @@ namespace Server.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         private async Task<Post> GetPostByPostId(int postId)
         {
-
-            
 
             Post postToGet = await _appDBContext.Posts
                     .Include(post => post.ArchiveModel)

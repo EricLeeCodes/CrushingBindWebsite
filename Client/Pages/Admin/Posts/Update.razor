@@ -1,4 +1,4 @@
-﻿@page "/admin/posts/create"
+﻿@page "/admin/posts/update/{PostId:int}"
 @using System.Net;
 @using Client.Components.Admin
 @inject HttpClient HttpClient
@@ -13,16 +13,15 @@
         <div class="row g-0">
             <div class="col">
 
-                <h1 class="mb-4">@(_createSuccessful ? "Success! Go back to see the created post." : "Create Post")</h1>
+                <h1 class="mb-4">Update Post</h1>
 
-                @if (_attemptingToCreate == true)
+                @if (_postToUpdate == null)
                 {
-                    <h1>Creating Post...</h1>
                     <LoadingHeart />
                 }
-                else if (_createSuccessful == false && _attemptingToCreate == false)
+                else
                 {
-                    <EditForm Model="_postToCreate" OnValidSubmit="CreatePost">
+                    <EditForm Model="_postToUpdate" OnValidSubmit="UpdatePost">
                         <DataAnnotationsValidator />
 
                         @if (InMemoryDatabaseCache.ArchiveModels == null)
@@ -33,7 +32,7 @@
                         {
                             <div class="form-group mb-5">
                                 <label for="postArchive"> Archive Chapters </label>
-                                <InputSelect @bind-Value="@_postToCreate.ArchiveId" class="form-control" id="postArchive">
+                                <InputSelect @bind-Value="@_postToUpdate.ArchiveId" class="form-control" id="postArchive">
                                     @foreach (var archive in InMemoryDatabaseCache.ArchiveModels)
                                     {
                                         <option value="@archive.ArchiveId">@archive.ArchiveChapterNumber</option>
@@ -46,7 +45,7 @@
 
                         <div class="form-group mb-5">
                             <label for="postTitle">Post title</label>
-                            <InputText @bind-Value="_postToCreate.Title" class="form-control" id="postTitle"></InputText>
+                            <InputText @bind-Value="_postToUpdate.Title" class="form-control" id="postTitle"></InputText>
                         </div>
 
                         <div class="form-group mb-5">
@@ -62,7 +61,7 @@
                             }
                             else
                             {
-                                <img src="@($"{APIEndpoints.ServerBaseUrl}/{_postToCreate.IntroBorder}")"
+                                <img src="@($"{APIEndpoints.ServerBaseUrl}/{_postToUpdate.IntroBorder}")"
                              class="admin-crud-form-thumbnail-image center" alt="Archive thumbnail image" />
                             }
 
@@ -84,7 +83,7 @@
                             }
                             else
                             {
-                                <img src="@($"{APIEndpoints.ServerBaseUrl}/{_postToCreate.ArchiveThumbnailImagePath}")"
+                                <img src="@($"{APIEndpoints.ServerBaseUrl}/{_postToUpdate.ArchiveThumbnailImagePath}")"
                              class="admin-crud-form-thumbnail-image center" alt="Archive thumbnail image" />
                             }
 
@@ -96,7 +95,7 @@
 
                         <div class="form-group mb-5">
                             <label for="postExcerpt">Post excerpt</label>
-                            <InputText @bind-Value="_postToCreate.Excerpt" class="form-control" id="postExcerpt"></InputText>
+                            <InputText @bind-Value="_postToUpdate.Excerpt" class="form-control" id="postExcerpt"></InputText>
                         </div>
 
                         <div class="form-group mb-5 flex-shrink-1">
@@ -107,7 +106,7 @@
 
                         <div class="form-group mb-5">
                             <label for="postPublished">Post published</label>
-                            <InputCheckbox @bind-Value="@_postToCreate.Published" class="form-check-input" id="postPublished" aria-describedby="postPublishedHelp" />
+                            <InputCheckbox @bind-Value="@_postToUpdate.Published" class="form-check-input" id="postPublished" aria-describedby="postPublishedHelp" />
                             <div id="postPublishedHelp" class="form-text">
                                 The value of this specifies whether this blog post is visible on the user facing site or not.
                                 Publishing a blog post also updates the value of the PublishDate field.
@@ -137,6 +136,7 @@
 
 @code
 {
+    [Parameter] public int PostId { get; set; }
 
     private ElementReference _quillJSEditorDiv; //contains HTML element where it gets rendered
     protected async override Task OnAfterRenderAsync(bool firstRender)
@@ -149,38 +149,38 @@
                 StateHasChanged();
             }
 
-            await JSRuntime.InvokeVoidAsync("QuillFunctions.createQuill", _quillJSEditorDiv, true);
+            await JSRuntime.InvokeVoidAsync("QuillFunctions.updateQuill", _quillJSEditorDiv, true);
         }
     }
 
 
-    private PostDTO _postToCreate = new PostDTO() { ArchiveThumbnailImagePath = "uploads/placeholder.jpg", IntroBorder = "uploads/intro_border.png" };
-    private bool _attemptingToCreate = false;
-    private bool _attemptToCreateFailed = false;
-    private bool _createSuccessful = false;
+    private PostDTO _postToUpdate = new PostDTO() { ArchiveThumbnailImagePath = "uploads/placeholder.jpg", IntroBorder = "uploads/intro_border.png" };
+    private bool _attemptingToUpdate = false;
+    private bool _attemptToUpdateFailed = false;
+    private bool _updateSuccessful = false;
 
-    private async Task CreatePost()
+    private async Task UpdatePost()
     {
-        _attemptingToCreate = true;
+        _attemptingToUpdate = true;
 
-        _postToCreate.Content = await JSRuntime.InvokeAsync<string>("QuillFunctions.getQuillContent", _quillJSEditorDiv, true);
+        _postToUpdate.Content = await JSRuntime.InvokeAsync<string>("QuillFunctions.getQuillContent", _quillJSEditorDiv, true);
 
-        HttpResponseMessage response = await HttpClient.PostAsJsonAsync<PostDTO>(APIEndpoints.s_posts, _postToCreate);
+        HttpResponseMessage response = await HttpClient.PostAsJsonAsync<PostDTO>(APIEndpoints.s_posts, _postToUpdate);
 
-        if (response.StatusCode == HttpStatusCode.Created)
+        if (response.StatusCode == HttpStatusCode.Updated)
         {
             Post addedPost = await response.Content.ReadFromJsonAsync<Post>();
             addedPost.ArchiveModel = await InMemoryDatabaseCache.GetArchiveByArchiveId(addedPost.ArchiveId, false);
             InMemoryDatabaseCache.Posts.Add(addedPost);
 
-            _createSuccessful = true;
+            _updateSuccessful = true;
         }
         else
         {
-            _attemptToCreateFailed = true;
+            _attemptToUpdateFailed = true;
         }
 
-        _attemptingToCreate = false;
+        _attemptingToUpdate = false;
 
     }
 
@@ -196,7 +196,7 @@
         if (e.File.ContentType != "image/jpeg" && e.File.ContentType != "image/png")
         {
             _reasonImageUploadFailed = "Please only upload JPEG, JPG, or PNG file.";
-            _attemptToCreateFailed = true;
+            _attemptToUpdateFailed = true;
         }
 
         //31457280 is 30 megabytes
@@ -225,9 +225,9 @@
 
             HttpResponseMessage response = await HttpClient.PostAsJsonAsync<UploadedImage>(APIEndpoints.s_imageUpload, uploadedImage);
 
-            if (response.StatusCode == HttpStatusCode.Created)
+            if (response.StatusCode == HttpStatusCode.Updated)
             {
-                _postToCreate.ArchiveThumbnailImagePath = await response.Content.ReadAsStringAsync();
+                _postToUpdate.ArchiveThumbnailImagePath = await response.Content.ReadAsStringAsync();
             }
             else
             {

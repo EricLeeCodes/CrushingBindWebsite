@@ -56,8 +56,5 @@ namespace Server.Controllers
                 return StatusCode(500, $"Something went wrong on our side. Please contact the administrator: {e.Message}");
             }
         }
-
-
-
     }
 }

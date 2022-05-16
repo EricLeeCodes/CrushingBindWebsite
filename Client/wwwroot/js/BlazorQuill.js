@@ -16,17 +16,17 @@
 
         },
 
-        getQuillContent: function (quillControl) {
-            return JSON.stringify(quillControl.__quill.getContents());
+        getQuillContent: function (quillElement) {
+            return JSON.stringify(quillElement.__quill.getContents());
         },
-        setQuillContent: function (quillControl, quillContent) {
+        setQuillContent: function (quillElement, quillContent) {
             content = JSON.parse(quillContent);
-            return quillControl.__quill.setContents(content, 'api');
+            return quillElement.__quill.setContents(content, 'api');
         },
 
 
-        disableQuillEditor: function (quillControl) {
-            quillControl.__quill.enable(false);
+        disableQuillEditor: function (quillElement) {
+            quillElement.__quill.enable(false);
         }
     };
 })();
@@ -60,7 +60,7 @@ var toolbarOptions = [
     [{ 'align': [] }],
 
     // links and images
-    ['link', 'image']
+    ['link', 'image'],
 
     // remove formatting button
     ['clean']                                         

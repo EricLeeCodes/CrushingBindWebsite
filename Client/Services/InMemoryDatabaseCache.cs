@@ -40,7 +40,7 @@ namespace Client.Services
 
             ArchiveModel archiveToReturn = _archiveModels.First(archive => archive.ArchiveId == archiveId);
 
-            if(archiveToReturn == null && withPosts == true)
+            if(archiveToReturn.Posts == null && withPosts == true)
             {
                 archiveToReturn = await _httpClient.GetFromJsonAsync<ArchiveModel>($"{APIEndpoints.s_archivesWithPosts}/{archiveToReturn.ArchiveId}");
             }

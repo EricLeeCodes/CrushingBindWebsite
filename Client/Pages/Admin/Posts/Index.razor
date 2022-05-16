@@ -64,7 +64,7 @@
                                             </th>
 
 
-                                             <td class="w-8" scope="row">
+                                            <td class="w-8" scope="row">
                                                 <p>@post.Title</p>
                                             </td>
 
@@ -80,8 +80,8 @@
                                             </td>
 
                                             <td class="w-14">
-												<p>@post.Excerpt</p>
-											</td>
+                                                <p>@post.Excerpt</p>
+                                            </td>
 
                                             <td class="w-14" scope="row">
                                                 <p>@(post.Published ? $"{post.PublishDate} UTC" : "Not published")</p>
@@ -105,8 +105,7 @@
 
                                                 <br />
                                                 <div class="d-flex flex-column">
-                                                    <a href="/admin/posts/update/@post.ArchiveId"
-                                           class="btn btn-update shadow md-f-size-1-5 align-self-center btn-width-50">
+                                                    <a href="/admin/posts/update/@post.PostId" class="btn btn-update shadow md-f-size-1-5 align-self-center btn-width-50">
                                                         <i class="fas fa-edit"></i> Update
                                                     </a>
                                                     <br />
@@ -197,5 +196,7 @@
         _attemptingToDeleteAPost = false;
         StateHasChanged();
     }
+
+
 
 }

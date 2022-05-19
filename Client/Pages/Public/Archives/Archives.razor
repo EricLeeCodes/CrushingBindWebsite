@@ -1,0 +1,137 @@
+﻿@page "/archives"
+@using Client.Components.Public.Archives
+@inject InMemoryDatabaseCache InMemoryDatabaseCache
+
+<PageTitle>Crushing Bind | Archives</PageTitle>
+
+<Navbar />
+
+<main class="container min-vh-90 py-5">
+    <div class="row">
+        <div class="text-center bottom-spacing">
+            <h1 class="my-3 cloudy-serif">Archives</h1>
+            <p>Welcome to Crushing Bind!</p>
+        </div>
+        <div class="row">
+            @if (InMemoryDatabaseCache.ArchiveModels == null)
+            {
+                <LoadingHeart />
+            }
+            else
+				{
+					@if (InMemoryDatabaseCache.ArchiveModels.Count < 1)
+					{
+						<h3>No categories found.</h3>
+					}
+					else if (InMemoryDatabaseCache.ArchiveModels.Count < 3)
+					{
+						<div class="row">
+							@foreach (var archive in InMemoryDatabaseCache.ArchiveModels)
+							{
+								<div class="col-md-4">
+									<ArchivesCard ArchiveModel="archive" />
+								</div>
+							}
+						</div>
+					}
+					else
+					{
+						@if (InMemoryDatabaseCache.ArchiveModels.Count % 3 == 0)
+						{
+							@for (int i = 0; i < InMemoryDatabaseCache.ArchiveModels.Count; i += 3)
+							{
+								<div class="row">
+									<div class="col-md-4">
+										<ArchivesCard ArchiveModel="InMemoryDatabaseCache.ArchiveModels[i]" />
+									</div>
+									<div class="col-md-4">
+										<ArchivesCard ArchiveModel="InMemoryDatabaseCache.ArchiveModels[i + 1]" />
+									</div>
+									<div class="col-md-4">
+										<ArchivesCard ArchiveModel="InMemoryDatabaseCache.ArchiveModels[i + 2]" />
+									</div>
+								</div>
+							}
+						}
+						else if (InMemoryDatabaseCache.ArchiveModels.Count % 3 == 1)
+						{
+							@for (int i = 0; i < InMemoryDatabaseCache.ArchiveModels.Count - 1; i += 3)
+							{
+								<div class="row">
+									<div class="col-md-4">
+										<ArchivesCard ArchiveModel="InMemoryDatabaseCache.ArchiveModels[i]" />
+									</div>
+									<div class="col-md-4">
+										<ArchivesCard ArchiveModel="InMemoryDatabaseCache.ArchiveModels[i + 1]" />
+									</div>
+									<div class="col-md-4">
+										<ArchivesCard ArchiveModel="InMemoryDatabaseCache.ArchiveModels[i + 2]" />
+									</div>
+								</div>
+							}
+
+							<div class="row">
+								<div class="col-md-4">
+									<ArchivesCard ArchiveModel="InMemoryDatabaseCache.ArchiveModels[InMemoryDatabaseCache.ArchiveModels.Count - 1]" />
+								</div>
+							</div>
+						}
+						else if (InMemoryDatabaseCache.ArchiveModels.Count % 3 == 2)
+						{
+							@for (int i = 0; i < InMemoryDatabaseCache.ArchiveModels.Count - 2; i += 3)
+							{
+								<div class="row">
+									<div class="col-md-4">
+										<ArchivesCard ArchiveModel="InMemoryDatabaseCache.ArchiveModels[i]" />
+									</div>
+									<div class="col-md-4">
+										<ArchivesCard ArchiveModel="InMemoryDatabaseCache.ArchiveModels[i + 1]" />
+									</div>
+									<div class="col-md-4">
+										<ArchivesCard ArchiveModel="InMemoryDatabaseCache.ArchiveModels[i + 2]" />
+									</div>
+								</div>
+							}
+
+							//displays the remainder of the row. -1 displays the last one. -2 displays second last one.
+							<div class="row">
+								<div class="col-md-4">
+									<ArchivesCard ArchiveModel="InMemoryDatabaseCache.ArchiveModels[InMemoryDatabaseCache.ArchiveModels.Count - 2]" />
+								</div>
+								<div class="col-md-4">
+									<ArchivesCard ArchiveModel="InMemoryDatabaseCache.ArchiveModels[InMemoryDatabaseCache.ArchiveModels.Count - 1]" />
+								</div>
+							</div>
+						}
+						
+					}
+				}
+            
+        </div>
+    </div>
+
+
+</main>
+
+<Footer />
+
+
+@implements IDisposable
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        InMemoryDatabaseCache.OnArchiveModelsDataChanged += StateHasChanged;
+
+        if (InMemoryDatabaseCache.ArchiveModels == null)
+        {
+            await InMemoryDatabaseCache.GetArchiveModelsFromDatabaseAndCache(true);
+        }
+    }
+
+    //Unsubscribe from events or else there will be a memory leak.
+    public void Dispose()
+    {
+        InMemoryDatabaseCache.OnArchiveModelsDataChanged -= StateHasChanged;
+    }
+}

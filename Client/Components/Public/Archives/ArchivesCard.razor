@@ -1,11 +1,12 @@
-﻿<a href="/">
+﻿<a href="@($"/archives/{ArchiveModel.ArchiveChapterNumber.ConvertTitleToURL().ToLowerInvariant()}")">
     <div class="card flex-md-row mb-4 shadow-sm">
         <img src="@($"{APIEndpoints.ServerBaseUrl}/{ArchiveModel.ArchiveThumbnailImagePath}")"
              class="card-img-left flex-auto d-lg-block archive-image"
-             alt="Chapter 1 thumbnail image" />
+             alt="Archive thumbnail image" />
         <div class="card-body archive-body d-flex flex-column align-items-center">
             <h3>@ArchiveModel.ArchiveChapterNumber</h3>
         </div>
+
     </div>
 </a>
 

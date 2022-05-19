@@ -1,0 +1,74 @@
+﻿@page "/archives/{ArchiveName}/{PostTitle}"
+@inject InMemoryDatabaseCache InMemoryDatabaseCache
+@inject HttpClient HttpClient
+@inject IJSRuntime JSRuntime
+
+<Navbar/>
+
+<main class="container min-vh-90 py-5">
+    @if (_archiveModel == null || _post == null)
+    {
+        <LoadingHeart />
+    }
+    else
+    {
+        <div class="col-12 py-5 px-md-5 mt-3">
+            <article>
+                <h2 class="cloudy-serif text-center">@_post.Title</h2>
+               
+
+                @if (_loadingContent == true)
+                {
+                    <LoadingHeart />
+                }
+
+                <div @ref="_quillJSReadOnlyEditorDiv" class="p-0 mt-5"></div>
+
+            </article>
+        </div>
+    }
+</main>
+
+
+
+
+<Footer/>
+
+@code
+{
+    [Parameter] public string ArchiveName { get; set; }
+    [Parameter] public string PostTitle { get; set; }
+    private ArchiveModel _archiveModel = null;
+    private Post _post = null;
+    private ElementReference _quillJSReadOnlyEditorDiv;
+    private bool _loadingContent = false;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _loadingContent = true;
+
+        _archiveModel = await InMemoryDatabaseCache.GetArchiveByArchiveChapterName(ArchiveName.ConvertURLToTitle(), true, true);
+
+        string postTitleFromURL = PostTitle.ConvertURLToTitle();
+
+        _post = _archiveModel.Posts.First(post => post.Title.ToLowerInvariant() == postTitleFromURL);
+
+        StateHasChanged();
+
+        await Task.Delay(500);
+
+        await JSRuntime.InvokeVoidAsync("QuillFunctions.createQuill", _quillJSReadOnlyEditorDiv, false);
+
+        if (string.IsNullOrEmpty(_post.Content) == false)
+        {
+            await JSRuntime.InvokeAsync<object>("QuillFunctions.setQuillContent", _quillJSReadOnlyEditorDiv, _post.Content);
+        }
+
+        await JSRuntime.InvokeAsync<object>("QuillFunctions.disableQuillEditor", _quillJSReadOnlyEditorDiv);
+
+        _loadingContent = false;
+
+        StateHasChanged();
+
+    }
+}

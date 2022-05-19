@@ -1,0 +1,156 @@
+﻿@page "/archives/{ArchiveName}"
+@inject InMemoryDatabaseCache InMemoryDatabaseCache
+@using Client.Components.Public.Archives
+
+
+<PageTitle>Crushing Bind | Chapters</PageTitle>
+
+<Navbar />
+
+
+
+<main class="container min-vh-90 py-5">
+    <div class="row">
+
+
+
+        <div class="col">
+            @if (_archiveModel == null || _publishedPosts == null)
+            {
+                <LoadingHeart />
+            }
+            else
+            {
+                <div class="text-center bottom-spacing">
+                    <h1 class="my-3 cloudy-serif">Crushing Bind @_archiveModel.ArchiveChapterNumber</h1>
+                </div>
+
+                @if (_publishedPosts.Count < 1)
+                {
+                    <div class="text-center">
+                        <h3>Coming soon!</h3>
+                    </div>
+                }
+                else if (_publishedPosts.Count < 3)
+                {
+                    <div class="row">
+                        @foreach (var post in _publishedPosts)
+                        {
+                            <div class="col-md-4">
+                                <ChapterCard ArchiveModel="_archiveModel" Post="post" />
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    @if (_publishedPosts.Count % 3 == 0)
+                    {
+                        @for (int i = 0; i < _publishedPosts.Count; i += 3)
+                        {
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <ChapterCard ArchiveModel="_archiveModel" Post="_publishedPosts[i]" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <ChapterCard ArchiveModel="_archiveModel" Post="_publishedPosts[i + 1]" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <ChapterCard ArchiveModel="_archiveModel" Post="_publishedPosts[i + 2]" />
+                                </div>
+                            </div>
+                        }
+                    }
+                    else if (_publishedPosts.Count % 3 == 1)
+                    {
+                        @for (int i = 0; i < _publishedPosts.Count - 1; i += 3)
+                        {
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <ChapterCard ArchiveModel="_archiveModel" Post="_publishedPosts[i]" />
+                                </div>
+                                <div class="col-md-4">
+                                    <ChapterCard ArchiveModel="_archiveModel" Post="_publishedPosts[i + 1]" />
+                                </div>
+                                <div class="col-md-4">
+                                    <ChapterCard ArchiveModel="_archiveModel" Post="_publishedPosts[i + 2]" />
+                                </div>
+                            </div>
+                        }
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <ChapterCard ArchiveModel="_archiveModel" Post="_publishedPosts[_publishedPosts.Count - 1]" />
+                            </div>
+                        </div>
+                    }
+                    else if (_publishedPosts.Count % 3 == 2)
+                    {
+                        @for (int i = 0; i < _publishedPosts.Count - 2; i += 3)
+                        {
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <ChapterCard ArchiveModel="_archiveModel" Post="_publishedPosts[i]" />
+                                </div>
+                                <div class="col-md-4">
+                                    <ChapterCard ArchiveModel="_archiveModel" Post="_publishedPosts[i + 1]" />
+                                </div>
+                                <div class="col-md-4">
+                                    <ChapterCard ArchiveModel="_archiveModel" Post="_publishedPosts[i + 2]" />
+                                </div>
+                            </div>
+                        }
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <ChapterCard ArchiveModel="_archiveModel" Post="_publishedPosts[_publishedPosts.Count - 2]" />
+                            </div>
+                            <div class="col-md-4">
+                                <ChapterCard ArchiveModel="_archiveModel" Post="_publishedPosts[_publishedPosts.Count - 1]" />
+                            </div>
+                        </div>
+                    }
+
+                }
+            }
+        </div>
+    </div>
+</main>
+
+<Footer />
+
+
+
+
+
+
+@code
+{
+    [Parameter] public string ArchiveName { get; set; }
+    private ArchiveModel _archiveModel = null;
+    private List<Post> _publishedPosts = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        if (_publishedPosts == null)
+        {
+            await InMemoryDatabaseCache.GetArchiveModelsFromDatabaseAndCache(false);
+        }
+
+        _archiveModel = await InMemoryDatabaseCache.GetArchiveByArchiveChapterName(ArchiveName.ConvertURLToTitle(), true, true);
+
+        if (_archiveModel.Posts.Count != 0)
+        {
+            _publishedPosts = _archiveModel.Posts.Where(post => post.Published == true).ToList();
+        }
+        else
+        {
+            _publishedPosts = new List<Post>();
+        }
+    }
+}

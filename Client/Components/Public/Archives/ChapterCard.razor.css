@@ -1,0 +1,21 @@
+﻿a:link {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.archive-image {
+    width: 30%;
+}
+
+.archive-body {
+    width: 85%;
+    color: black;
+}
+
+.card {
+    height: 100px;
+    text-decoration: none;
+}

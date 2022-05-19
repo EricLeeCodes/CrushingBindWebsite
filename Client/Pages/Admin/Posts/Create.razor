@@ -32,7 +32,7 @@
                         else
                         {
                             <div class="form-group mb-5">
-                                <label for="postArchive"> Archive Chapters </label>
+                                <label for="postArchive"> Archive Parts </label>
                                 <InputSelect @bind-Value="@_postToCreate.ArchiveId" class="form-control" id="postArchive">
                                     @foreach (var archive in InMemoryDatabaseCache.ArchiveModels)
                                     {
@@ -45,7 +45,7 @@
 
 
                         <div class="form-group mb-5">
-                            <label for="postTitle">Post title</label>
+                            <label for="postTitle">Chapter title</label>
                             <InputText @bind-Value="_postToCreate.Title" class="form-control" id="postTitle"></InputText>
                         </div>
 

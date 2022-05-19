@@ -23,7 +23,7 @@
                         <DataAnnotationsValidator />
 
                         <div class="form-group mb-5">
-                            <label for="archiveChapter"> Archive Chapter Label (Chapter 1, Chapter 2, etc.)</label>
+                            <label for="archiveChapter"> Archive Part Label (Part 1, Part 2, etc.)</label>
                             <InputText @bind-Value="_archiveToUpdate.ArchiveChapterNumber" class="form-control" id="archiveChapter"></InputText>
                         </div>
 
@@ -55,7 +55,7 @@
                             <i class="far fa-save"></i> Save
                         </button>
 
-                        <a href="/admin/archives" class="btn btn-primary shadow mt-5 md-f-size-1-5">
+                        <a href="/admin/archivemodels" class="btn btn-primary shadow mt-5 md-f-size-1-5">
                             <i class="fas fa-arrow-left"></i> Back to all archives
                         </a>
 
@@ -74,7 +74,7 @@
                     @if( _attemptToUpdateFailed == true)
                     {
                         <Toast IsError="true" ToastTitle="Update failed"
-                            ToastBody="Update failed. Please try again and if the issue persists contact the administrator." 
+                            ToastBody="Update failed. Make sure there are no posts attached to the archive. Please try again and if the issue persists contact the administrator." 
                             ParentMethodToCallOnClickBtnClose="() => _attemptToUpdateFailed = false" />
                     }                   
 

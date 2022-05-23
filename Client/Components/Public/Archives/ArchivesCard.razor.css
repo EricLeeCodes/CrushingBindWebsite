@@ -6,18 +6,20 @@ a:hover {
     text-decoration: none;
 }
 
-.archive-image {
-    width: 30%;
+.card-img-top {
+    width: 100%;
+    height: 15vw;
+    object-fit: cover;
     
 }
 
 .archive-body {
-    width: 85%;
+    width: 100%;
     color: black;
 }
 
-.card {
-    height: 100px;
-    text-decoration: none;
-}
+.card-title {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 
+}

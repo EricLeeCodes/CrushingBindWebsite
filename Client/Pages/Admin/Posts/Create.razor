@@ -49,27 +49,7 @@
                             <InputText @bind-Value="_postToCreate.Title" class="form-control" id="postTitle"></InputText>
                         </div>
 
-                        <div class="form-group mb-5">
-                            <label for="borderImage"> Intro Border Image </label>
-
-                            @if (_attemptingToUploadImage == true)
-                            {
-                                <LoadingHeart />
-                            }
-                            else if (_attemptToUploadFailed == true)
-                            {
-                                <h4 class="text-danger">Failed to upload image. @_reasonImageUploadFailed</h4>
-                            }
-                            else
-                            {
-                                <img src="@($"{APIEndpoints.ServerBaseUrl}/{_postToCreate.IntroBorder}")"
-                             class="admin-crud-form-thumbnail-image center" alt="Archive thumbnail image" />
-                            }
-
-                            <br />
-
-                            <InputFile OnChange="HandleUploadedImage" class="form-control mt-4" id="borderImage" />
-                        </div>
+                        
 
                         <div class="form-group mb-5">
                             <label for="thumbnailImage"> Thumbnail Image </label>
@@ -154,7 +134,7 @@
     }
 
 
-    private PostDTO _postToCreate = new PostDTO() { ArchiveThumbnailImagePath = "uploads/placeholder.jpg", IntroBorder = "uploads/intro_border.png" };
+    private PostDTO _postToCreate = new PostDTO() { ArchiveThumbnailImagePath = "uploads/placeholder.jpg"};
     private bool _attemptingToCreate = false;
     private bool _attemptToCreateFailed = false;
     private bool _createSuccessful = false;

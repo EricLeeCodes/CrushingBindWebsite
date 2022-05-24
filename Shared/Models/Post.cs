@@ -19,9 +19,6 @@ namespace Shared.Models
         [NoThreeOrMoreSpacesInARow(ErrorMessage = "The Archive Chapter Label field contains three or more spaces in a row. Please remove them. ")]
         public string Title { get; set; }
 
-        [Required]
-        [MaxLength(256)]
-        public string IntroBorder { get; set; }
 
         [Required]
         [MaxLength(256)]

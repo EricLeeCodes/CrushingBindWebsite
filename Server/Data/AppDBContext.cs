@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Shared.Models;
 using System;
@@ -87,7 +88,6 @@ namespace Server.Data
                 {
                     PostId = i,
                     ArchiveThumbnailImagePath = "uploads/placeholder.jpg",
-                    IntroBorder = "uploads/intro_border.png",
                     Title = postTitle,
                     Excerpt = "This is an excerpt example",
                     Content = string.Empty,
@@ -101,6 +101,59 @@ namespace Server.Data
 
             #endregion
 
+            #region Administrator Role Seed
+
+            const string administratorRoleName = "Administrator";
+
+            IdentityRole administratorRoleToSeed = new()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = administratorRoleName,
+                NormalizedName = administratorRoleName.ToUpperInvariant()
+            };
+
+            modelBuilder.Entity<IdentityRole>().HasData(administratorRoleToSeed);
+
+
+            #endregion
+
+            #region Administrator User Seed
+
+            const string administratorUserEmail = "admin@crushingbind.com";
+
+            var passwordHasher = new PasswordHasher<IdentityUser>();
+
+            IdentityUser administratorUserToSeed = new()
+            {
+                AccessFailedCount = 5,
+                Id = Guid.NewGuid().ToString(),
+                UserName = administratorUserEmail,
+                NormalizedUserName = administratorUserEmail.ToUpperInvariant(),
+                Email = administratorUserEmail,
+                NormalizedEmail = administratorUserEmail.ToUpperInvariant(),
+                PasswordHash = string.Empty,
+            };
+
+            string hashedPassword = passwordHasher.HashPassword(administratorUserToSeed, "Luffywillbepirateking1!");
+
+            administratorUserToSeed.PasswordHash = hashedPassword;
+
+            modelBuilder.Entity<IdentityUser>().HasData(administratorUserToSeed);
+
+
+            #endregion
+
+            #region Add The Administrator User To The Administrator Role
+
+            IdentityUserRole<string> identityUserRoleToSeed = new()
+            {
+                RoleId = administratorRoleToSeed.Id,
+                UserId = administratorUserToSeed.Id,
+            };
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(identityUserRoleToSeed);
+
+            #endregion
         }
 
 

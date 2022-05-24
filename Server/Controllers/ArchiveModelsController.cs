@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.Data;
 using Shared.Models;
@@ -7,6 +8,7 @@ namespace Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Administrator")]
 
     public class ArchiveModelsController : ControllerBase
     {
@@ -24,6 +26,7 @@ namespace Server.Controllers
         #region GET
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Get()
         {
             List<ArchiveModel> archiveModels = await _appDBContext.ArchiveModels.ToListAsync();
@@ -33,6 +36,8 @@ namespace Server.Controllers
 
         //website.com/api/categories/withposts
         [HttpGet("withposts")]
+        [AllowAnonymous]
+
 
         public async Task<IActionResult> GetWithPosts()
         {
@@ -45,6 +50,7 @@ namespace Server.Controllers
 
         //website.com/api/categories/2
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> Get(int id)
         {
             ArchiveModel archiveModel = await GetArchiveByArchiveId(id, false);
@@ -54,6 +60,7 @@ namespace Server.Controllers
 
         //website.com/api/categories/withposts/2
         [HttpGet("withposts/{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetWithPosts(int id)
         {
             ArchiveModel archiveModel = await GetArchiveByArchiveId(id, true);

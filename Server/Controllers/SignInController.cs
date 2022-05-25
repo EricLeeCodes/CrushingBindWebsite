@@ -74,7 +74,7 @@ namespace Server.Controllers
             );
 
             return new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-
+            
         }
 
 

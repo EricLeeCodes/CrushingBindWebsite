@@ -1,23 +1,24 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-    </Found>
-    <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <main class="d-flex flex-column w-100 min-vh-100 justify-content-center align-items-center">
-                <h1 class="mb-3 text-center">Oh no! This page doesn't exist!
-                     <br/>
-                    Click on the duck to go back home!
-                </h1>
-                <a href="/"> 
-                    <img src="assets/img/Other/GuidingDuck.png" alt="A cute duck button that goes back to the home page"/>
-                </a>
-            </main>
-        </LayoutView>
-    </NotFound>
-</Router>
+﻿<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <main class="d-flex flex-column w-100 min-vh-100 justify-content-center align-items-center">
+                    <h1 class="mb-3 text-center">
+                        Oh no! This page doesn't exist!
+                        <br />
+                        Click on the duck to go back home!
+                    </h1>
+                    <a href="/">
+                        <img src="assets/img/Other/GuidingDuck.png" alt="A cute duck button that goes back to the home page" />
+                    </a>
+                </main>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>
 
-
- 

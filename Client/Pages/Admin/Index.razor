@@ -3,7 +3,9 @@
 @inject InMemoryDatabaseCache InMemoryDatabaseCache
 
 
-<main class="admin-area-main">
+<AuthorizeView Roles="Administrator">
+    <Authorized Context="Auth">
+        <main class="admin-area-main">
 
     <Sidebar />
 
@@ -61,6 +63,13 @@
     </div>
 
 </main>
+
+    </Authorized>
+    <NotAuthorized>
+        <SignIn />
+    </NotAuthorized>
+</AuthorizeView>
+
 
 
 

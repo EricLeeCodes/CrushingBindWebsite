@@ -4,109 +4,119 @@
 @inject InMemoryDatabaseCache InMemoryDatabaseCache
 @inject HttpClient HttpClient
 
+<AuthorizeView Roles="Administrator">
+    <Authorized Context="Auth">
+        <main class="admin-area-main">
 
-<main class="admin-area-main">
+            <Sidebar />
 
-    <Sidebar />
+            <div class="admin-area-content container-fluid bg-white">
+                <div class="row g-0">
+                    <div class="col">
+                        <h1> Archives </h1>
+                        <br />
+                        <hr />
+                        <br />
 
-    <div class="admin-area-content container-fluid bg-white">
-        <div class="row g-0">
-            <div class="col">
-                <h1> Archives </h1>
-                <br />
-                <hr />
-                <br />
+                        @if (InMemoryDatabaseCache.ArchiveModels == null || _attemptingToDeleteAnArchive == true)
+                        {
+                            <LoadingHeart />
+                        }
+                        else
+                        {
+                            <a href="/admin/archives/create" class="btn btn-success shadow me-5 md-f-size-1-5">
+                                <i class="fas fa-plus"></i> Create Archive
+                            </a>
 
-                    @if (InMemoryDatabaseCache.ArchiveModels == null || _attemptingToDeleteAnArchive == true)
-                    {
-                        <LoadingHeart/>
-                    }
-                    else
-                    {
-                        <a href="/admin/archives/create" class="btn btn-success shadow me-5 md-f-size-1-5">
-                            <i class="fas fa-plus"></i> Create Archive
-                        </a>
+                            <button @onclick="() => InMemoryDatabaseCache.GetArchiveModelsFromDatabaseAndCache(true)"
+                                class="btn btn-primary shadow md-f-size-1-5">
+                                <i class="fas fa-sync"></i> Refresh data
+                            </button>
 
-                        <button @onclick="() => InMemoryDatabaseCache.GetArchiveModelsFromDatabaseAndCache(true)"
-                            class="btn btn-primary shadow md-f-size-1-5">
-                            <i class="fas fa-sync"></i> Refresh data
-                        </button>
+                            <br />
+                            <br />
+                            <br />
 
-                    <br />
-                    <br />
-                    <br />
+                            @if (InMemoryDatabaseCache.ArchiveModels.Count < 1)
+                            {
+                                <h1>No categories found. Please create one.</h1>
+                            }
+                            else
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Thumbnail</th>
+                                                <th scope="col">Chapter</th>
+                                                <th scope="col">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var archive in InMemoryDatabaseCache.ArchiveModels)
+                                            {
+                                                <tr>
+                                                    <th class="w-15" scope="row">
+                                                        <p>@archive.ArchiveChapterNumber</p>
+                                                    </th>
+                                                    <td class="w-15">
+                                                        <img src="@($"{APIEndpoints.ServerBaseUrl}/{archive.ArchiveThumbnailImagePath}")"
+                                                 class="admin-index-thumbnail-image center" alt="Archive thumbnail image" />
+                                                    </td>
+                                                    <td class="w-70">
+                                                        <div class="d-flex flex-column">
+                                                            <a href="/admin/archives/update/@archive.ArchiveId"
+                                                   class="btn btn-update shadow md-f-size-1-5 align-self-center btn-width-50">
+                                                                <i class="fas fa-edit"></i> Update
+                                                            </a>
 
-                    @if (InMemoryDatabaseCache.ArchiveModels.Count < 1)
-                    {
-                        <h1>No categories found. Please create one.</h1>
-                    }
-                    else
-                    {
-                        <div class="table-responsive">
-                            <table class="table table-striped table-bordered table-sm">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Thumbnail</th>
-                                        <th scope="col">Chapter</th>
-                                        <th scope="col">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach(var archive in InMemoryDatabaseCache.ArchiveModels)
-                                    {
-                                        <tr>
-                                            <th class="w-15" scope="row">
-                                                <p>@archive.ArchiveChapterNumber</p>
-                                            </th>
-                                            <td class="w-15">
-                                                <img src="@($"{APIEndpoints.ServerBaseUrl}/{archive.ArchiveThumbnailImagePath}")"
-                                                     class="admin-index-thumbnail-image center" alt="Archive thumbnail image"/>
-                                            </td>
-                                            <td class="w-70">
-                                                <div class="d-flex flex-column">
-                                                    <a href="/admin/archives/update/@archive.ArchiveId"
-                                                       class="btn btn-update shadow md-f-size-1-5 align-self-center btn-width-50">
-                                                        <i class="fas fa-edit"></i> Update
-                                                   </a>
+                                                            <br />
 
-                                                   <br/>
+                                                            <button @onclick="(() => DeleteArchive(archive))" class="btn btn-danger shadow md-f-size-1-5 align-self-center btn-width-50">
+                                                                <i class="fas fa-trash"></i> Delete
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                        }
 
-                                                   <button @onclick="(() => DeleteArchive(archive))" class="btn btn-danger shadow md-f-size-1-5 align-self-center btn-width-50">
-                                                       <i class="fas fa-trash"></i> Delete
-                                                   </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
+                        <div class="position-fixed bottom-0 end-5 z-index-5">
+
+                            @if (_successfullyDeletedAnArchive == true)
+                            {
+                                <Toast IsError="false" ToastTitle="Successfully deleted an archive."
+                                   ToastBody="The archive has been removed from the database."
+                                   ParentMethodToCallOnClickBtnClose="() => _successfullyDeletedAnArchive = false" />
+                            }
+                            @if (_unsuccessfullyTriedToDeleteAnArchive == true)
+                            {
+                                <Toast IsError="true" ToastTitle="Delete failed."
+                                   ToastBody="@($"The reason is \"{_reasonUnsuccessfullyTriedToDeleteAnArchive}\" Please try again and if the issue persists contact the administrator.")"
+                                   ParentMethodToCallOnClickBtnClose="() => _unsuccessfullyTriedToDeleteAnArchive = false" />
+                            }
+
+
                         </div>
-                    }
-                }
 
-                <div class="position-fixed bottom-0 end-5 z-index-5">
-                    
-                    @if (_successfullyDeletedAnArchive == true)
-                    {
-                        <Toast IsError="false" ToastTitle="Successfully deleted an archive."
-                            ToastBody="The archive has been removed from the database."
-                            ParentMethodToCallOnClickBtnClose="() => _successfullyDeletedAnArchive = false"/>
-                    }
-                    @if (_unsuccessfullyTriedToDeleteAnArchive == true)
-                    {
-                        <Toast IsError="true" ToastTitle="Delete failed."
-                            ToastBody="@($"The reason is \"{_reasonUnsuccessfullyTriedToDeleteAnArchive}\" Please try again and if the issue persists contact the administrator.")"
-                            ParentMethodToCallOnClickBtnClose="() => _unsuccessfullyTriedToDeleteAnArchive = false"/>
-                    }
-
-
+                    </div>
                 </div>
-
             </div>
-        </div>
-    </div>
 
-</main>
+        </main>
+
+
+    </Authorized>
+    <NotAuthorized>
+        <SignIn />
+    </NotAuthorized>
+</AuthorizeView>
+
+
 
 
 @implements IDisposable
@@ -131,11 +141,11 @@
     private string _reasonUnsuccessfullyTriedToDeleteAnArchive = null;
     private async void DeleteArchive(ArchiveModel archiveToDelete)
     {
-        if(archiveToDelete.Posts != null && archiveToDelete.Posts.Count != 0)
+        if (archiveToDelete.Posts != null && archiveToDelete.Posts.Count != 0)
         {
             string postTitlesThatMustBeDeletedFirst = string.Empty;
 
-            for (int i = 0; i < archiveToDelete.Posts.Count; i++ )
+            for (int i = 0; i < archiveToDelete.Posts.Count; i++)
             {
                 if (i == archiveToDelete.Posts.Count - 1)
                 {
@@ -147,7 +157,7 @@
                     //Second Last iteration
                     postTitlesThatMustBeDeletedFirst += $"\"{archiveToDelete.Posts[i].Title}\" and ";
                 }
-                else 
+                else
                 {
                     //Other iterations
                     postTitlesThatMustBeDeletedFirst += $"\"{archiveToDelete.Posts[i].Title}\", ";
@@ -168,7 +178,7 @@
 
             if (response.StatusCode == HttpStatusCode.NoContent)
             {
-                if(InMemoryDatabaseCache.ArchiveModels.Remove(archiveToDelete))
+                if (InMemoryDatabaseCache.ArchiveModels.Remove(archiveToDelete))
                 {
                     _successfullyDeletedAnArchive = true;
                 }

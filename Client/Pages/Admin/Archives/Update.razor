@@ -4,92 +4,103 @@
 @inject HttpClient HttpClient
 @inject InMemoryDatabaseCache InMemoryDatabaseCache
 
+<AuthorizeView Roles="Administrator">
+    <Authorized Context="Auth">
 
-<main class="admin-area-main">
-    <Sidebar />
+        <main class="admin-area-main">
+            <Sidebar />
 
-    <div class="admin-area-content container-fluid bg-white">
-        <div class="row g-0">
-            <div class="col">
+            <div class="admin-area-content container-fluid bg-white">
+                <div class="row g-0">
+                    <div class="col">
 
-                <h1 class="mb-4">Update Archive</h1>
-                @if (_archiveToUpdate == null || _attemptingToUpdate == true)
-                {
-                    <LoadingHeart />
-                }
-                else
-                {
-                    <EditForm Model="_archiveToUpdate" OnValidSubmit="UpdateArchive">
-                        <DataAnnotationsValidator />
+                        <h1 class="mb-4">Update Archive</h1>
+                        @if (_archiveToUpdate == null || _attemptingToUpdate == true)
+                        {
+                            <LoadingHeart />
+                        }
+                        else
+                        {
+                            <EditForm Model="_archiveToUpdate" OnValidSubmit="UpdateArchive">
+                                <DataAnnotationsValidator />
 
-                        <div class="form-group mb-5">
-                            <label for="archiveChapter"> Archive Part Label (Part 1, Part 2, etc.)</label>
-                            <InputText @bind-Value="_archiveToUpdate.ArchiveChapterNumber" class="form-control" id="archiveChapter"></InputText>
+                                <div class="form-group mb-5">
+                                    <label for="archiveChapter"> Archive Part Label (Part 1, Part 2, etc.)</label>
+                                    <InputText @bind-Value="_archiveToUpdate.ArchiveChapterNumber" class="form-control" id="archiveChapter"></InputText>
+                                </div>
+
+                                <div class="form-group mb-5">
+                                    <label for="thumbnailImage"> Thumbnail Image </label>
+
+                                    @if (_attemptingToUploadImage == true)
+                                    {
+                                        <LoadingHeart />
+                                    }
+                                    else if (_attemptToUploadFailed == true)
+                                    {
+                                        <h4 class="text-danger">Failed to upload image. @_reasonImageUploadFailed</h4>
+                                    }
+                                    else
+                                    {
+                                        <img src="@($"{APIEndpoints.ServerBaseUrl}/{_archiveToUpdate.ArchiveThumbnailImagePath}")"
+                                     class="admin-crud-form-thumbnail-image center" alt="Archive thumbnail image" />
+                                    }
+
+                                    <br />
+
+                                    <InputFile OnChange="HandleUploadedImage" class="form-control mt-4" id="thumbnailImage" />
+                                </div>
+
+                                <ValidationSummary />
+
+                                <button class="btn btn-success shadow d-block mt-5 md-f-size-1-5" type="submit">
+                                    <i class="far fa-save"></i> Save
+                                </button>
+
+                                <a href="/admin/archivemodels" class="btn btn-primary shadow mt-5 md-f-size-1-5">
+                                    <i class="fas fa-arrow-left"></i> Back to all archives
+                                </a>
+
+                            </EditForm>
+                        }
+
+                        <div class="position-fixed bottom-0 end-5 z-index-5">
+
+                            @if (_updateSuccessful == true)
+                            {
+                                <Toast IsError="false" ToastTitle="Update successful"
+                                   ToastBody="Your changes have been saved to the database."
+                                   ParentMethodToCallOnClickBtnClose="() => _updateSuccessful = false" />
+                            }
+
+                            @if (_attemptToUpdateFailed == true)
+                            {
+                                <Toast IsError="true" ToastTitle="Update failed"
+                                   ToastBody="Update failed. Make sure there are no posts attached to the archive. Please try again and if the issue persists contact the administrator."
+                                   ParentMethodToCallOnClickBtnClose="() => _attemptToUpdateFailed = false" />
+                            }
+
                         </div>
-
-                        <div class="form-group mb-5">
-                            <label for="thumbnailImage"> Thumbnail Image </label>
-
-                            @if (_attemptingToUploadImage == true)
-                            {
-                                <LoadingHeart />
-                            }
-                            else if (_attemptToUploadFailed == true)
-                            {
-                                <h4 class="text-danger">Failed to upload image. @_reasonImageUploadFailed</h4>
-                            }
-                            else
-                            {
-                                <img src="@($"{APIEndpoints.ServerBaseUrl}/{_archiveToUpdate.ArchiveThumbnailImagePath}")"
-                             class="admin-crud-form-thumbnail-image center" alt="Archive thumbnail image" />
-                            }
-
-                            <br />
-
-                            <InputFile OnChange="HandleUploadedImage" class="form-control mt-4" id="thumbnailImage" />
-                        </div>
-
-                        <ValidationSummary />
-
-                        <button class="btn btn-success shadow d-block mt-5 md-f-size-1-5" type="submit">
-                            <i class="far fa-save"></i> Save
-                        </button>
-
-                        <a href="/admin/archivemodels" class="btn btn-primary shadow mt-5 md-f-size-1-5">
-                            <i class="fas fa-arrow-left"></i> Back to all archives
-                        </a>
-
-                    </EditForm>
-                }
-
-                <div class="position-fixed bottom-0 end-5 z-index-5">
-
-                    @if( _updateSuccessful == true)
-                    {
-                        <Toast IsError="false" ToastTitle="Update successful"
-                            ToastBody="Your changes have been saved to the database." 
-                            ParentMethodToCallOnClickBtnClose="() => _updateSuccessful = false" />
-                    }
-
-                    @if( _attemptToUpdateFailed == true)
-                    {
-                        <Toast IsError="true" ToastTitle="Update failed"
-                            ToastBody="Update failed. Make sure there are no posts attached to the archive. Please try again and if the issue persists contact the administrator." 
-                            ParentMethodToCallOnClickBtnClose="() => _attemptToUpdateFailed = false" />
-                    }                   
-
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-</main>
+        </main>
+
+
+
+    </Authorized>
+    <NotAuthorized>
+        <SignIn />
+    </NotAuthorized>
+</AuthorizeView>
+
 
 
 @code
 {
     [Parameter] public int ArchiveId { get; set; }
-    private ArchiveModel _archiveToUpdate = null ;
+    private ArchiveModel _archiveToUpdate = null;
 
     protected async override Task OnParametersSetAsync()
     {
@@ -115,7 +126,7 @@
         }
         else
         {
-			_attemptToUpdateFailed = true;
+            _attemptToUpdateFailed = true;
         }
 
         _attemptingToUpdate = false;

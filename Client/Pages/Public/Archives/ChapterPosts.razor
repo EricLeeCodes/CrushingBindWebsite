@@ -3,7 +3,7 @@
 @inject HttpClient HttpClient
 @inject IJSRuntime JSRuntime
 
-<Navbar/>
+<Navbar />
 
 <main class="container min-vh-90 py-5">
     @if (_archiveModel == null || _post == null)
@@ -12,11 +12,25 @@
     }
     else
     {
+        <div class="row">
+            <div class="col-12 px-md-0">
+                <nav aria-label="breadcrumb md-f-size-1-5">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item cloudy-serif" aria-current="page"><a href="@($"/archives/{ArchiveName}")">@_archiveModel.ArchiveChapterNumber</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@_post.Title</li>
+                    </ol>
+                </nav>
+
+            </div>
+        </div>
+
+
+
         <div class="col-12 py-5 px-md-5 mt-3">
             <article>
                 <h2 class="cloudy-serif text-center">@_post.Title</h2>
-                
-               
+
+
 
                 @if (_loadingContent == true)
                 {
@@ -27,13 +41,31 @@
 
             </article>
         </div>
+
+
+
+        <div class="row">
+            <div class="col-12 px-md-0">
+                <nav aria-label="breadcrumb md-f-size-1-5">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item cloudy-serif" aria-current="page"><a href="@($"/archives/{ArchiveName}")">@_archiveModel.ArchiveChapterNumber</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@_post.Title</li>
+                    </ol>
+                </nav>
+
+            </div>
+        </div>
     }
+
+
+
+
 </main>
 
 
 
 
-<Footer/>
+<Footer />
 
 @code
 {
@@ -72,4 +104,5 @@
         StateHasChanged();
 
     }
+
 }

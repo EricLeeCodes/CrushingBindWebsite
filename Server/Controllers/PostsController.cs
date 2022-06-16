@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.Data;
 using Shared.Models;
+using System.Text.Json;
 
 namespace Server.Controllers
 {
@@ -70,7 +71,7 @@ namespace Server.Controllers
                 if (postToCreateDTO == null)
                 {
                     return BadRequest(ModelState);
-                }           
+                }
 
                 if (ModelState.IsValid == false)
                 {

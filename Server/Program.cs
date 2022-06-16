@@ -25,12 +25,11 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 //Cors
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("CorsPolicy",
-        builder =>
-        builder
-        .AllowAnyOrigin()
+    options.AddDefaultPolicy(builder =>
+    builder.WithOrigins("https://white-sand-079319c10.1.azurestaticapps.net/")
         .AllowAnyMethod()
         .AllowAnyHeader());
+        
 });
 
 
@@ -83,7 +82,7 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
-app.UseCors("CorsPolicy");
+app.UseCors();
 
 
 app.UseAuthentication();

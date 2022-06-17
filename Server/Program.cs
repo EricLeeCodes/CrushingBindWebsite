@@ -25,11 +25,14 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 //Cors
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
-    builder.WithOrigins("https://www.crushingbind.com")
-           .AllowAnyMethod()
-           .AllowAnyHeader());
+    options.AddPolicy("CorsPolicy",
+        builder =>
+        builder
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
 });
+
 
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
@@ -83,7 +86,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseCors();
+app.UseCors("CorsPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();

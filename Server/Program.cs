@@ -26,7 +26,7 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
-    builder.WithOrigins("https://white-sand-079319c10.1.azurestaticapps.net/")
+    builder.WithOrigins("https://www.crushingbind.com/")
         .AllowAnyMethod()
         .AllowAnyHeader());
         
@@ -81,6 +81,8 @@ app.UseSwaggerUI(swaggerUIOptions =>
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+
+app.UseRouting();
 
 app.UseCors();
 

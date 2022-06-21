@@ -67,6 +67,11 @@
     min-height: 90vh !important;
 }
 
+.bottom-spacing {
+    padding-bottom: 10%
+}
+
+
 /* 2. Backgrounds */
 .bg-lightgray {
     background-color: #EBEBEB;
@@ -83,6 +88,7 @@
 /* 3. Typography */
 body {
     font-family: 'Roboto', sans-serif;
+    background-color: #FFFFE0;
 }
 
 .f-size-3 {
@@ -91,8 +97,8 @@ body {
 
 /* 4. Components (buttons, 
     s etc.) */
-.btn-width-50 {
-    width: 50%;
+.btn-width-75 {
+    width: 75%;
     height: auto;
 }
 
@@ -139,6 +145,10 @@ body {
         margin-top: 1rem !important;
         margin-bottom: 1rem !important;
     }
+    .md-cards {
+
+    }
+
 
     .bg-motherboard-dev {
         background-image: url("../assets/img/publicbackgrounds/bg-motherboard.jpg");

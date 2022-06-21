@@ -134,7 +134,7 @@ namespace Server.Data
                 PasswordHash = string.Empty,
             };
 
-            string hashedPassword = passwordHasher.HashPassword(administratorUserToSeed, "Luffywillbepirateking1!");
+            string hashedPassword = passwordHasher.HashPassword(administratorUserToSeed, "Password123!");
 
             administratorUserToSeed.PasswordHash = hashedPassword;
 

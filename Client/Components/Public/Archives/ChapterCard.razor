@@ -1,9 +1,9 @@
 ﻿<a href="@($"/archives/{ArchiveModel.ArchiveChapterNumber.ConvertTitleToURL().ToLowerInvariant()}/{Post.Title.ConvertTitleToURL().ToLowerInvariant()}")">
     <div class="card flex-md-row mb-4 shadow">
         <img src="@($"{APIEndpoints.ServerBaseUrl}/{Post.ArchiveThumbnailImagePath}")"
-             class="card-img-left flex-auto d-lg-block archive-image"
+             class=" flex-auto d-lg-block chapter-image card-img-top"
              alt="Chapter 1 thumbnail image" />
-        <div class="card-body archive-body d-flex flex-column align-items-center">
+        <div class="card-body chapter-body d-flex flex-column align-items-center chapter-text">
             <h3>@Post.Title</h3>
         </div>
     </div>

@@ -23,3 +23,12 @@ a:hover {
     padding-bottom: 2rem;
 
 }
+
+@media screen and (max-width: 992px){
+    .card-img-top{
+        height: 100%;
+        width: 100%;
+        object-fit: fill;
+    }
+
+}

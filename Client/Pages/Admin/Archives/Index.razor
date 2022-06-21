@@ -56,14 +56,14 @@
                                             @foreach (var archive in InMemoryDatabaseCache.ArchiveModels)
                                             {
                                                 <tr>
-                                                    <th class="w-15" scope="row">
+                                                    <th class="w-15 text-center py-5" scope="row">
                                                         <p>@archive.ArchiveChapterNumber</p>
                                                     </th>
-                                                    <td class="w-15">
+                                                    <td class="w-30">
                                                         <img src="@($"{APIEndpoints.ServerBaseUrl}/{archive.ArchiveThumbnailImagePath}")"
                                                  class="admin-index-thumbnail-image center" alt="Archive thumbnail image" />
                                                     </td>
-                                                    <td class="w-70">
+                                                    <td class="w-55">
                                                         <div class="d-flex flex-column">
                                                             <a href="/admin/archives/update/@archive.ArchiveId"
                                                    class="btn btn-update shadow md-f-size-1-5 align-self-center btn-width-50">

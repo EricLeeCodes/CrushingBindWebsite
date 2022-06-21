@@ -7,7 +7,7 @@ using Server.Data;
 
 #nullable disable
 
-namespace Server.Data.Migrations
+namespace Server.Migrations
 {
     [DbContext(typeof(AppDBContext))]
     partial class AppDBContextModelSnapshot : ModelSnapshot
@@ -45,8 +45,8 @@ namespace Server.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "773a1e1e-8f12-4069-860f-aaa294782bfe",
-                            ConcurrencyStamp = "ac506b22-5e27-4b8b-bffc-db00eb5fecbf",
+                            Id = "55e24c6d-6352-4faa-a252-a17e9df3a613",
+                            ConcurrencyStamp = "20a0b9ff-a5aa-4538-acff-ac216a8ee42d",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -141,17 +141,17 @@ namespace Server.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3edcf7c1-04e3-43ab-88dd-ca5764519791",
+                            Id = "2134d2a4-556c-471b-aa79-9f2b073e3710",
                             AccessFailedCount = 5,
-                            ConcurrencyStamp = "69a22798-e61c-4011-b070-8f09b88bef8f",
+                            ConcurrencyStamp = "5c30d98c-16f2-46a4-8d05-c52d53592938",
                             Email = "admin@crushingbind.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@CRUSHINGBIND.COM",
                             NormalizedUserName = "ADMIN@CRUSHINGBIND.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBYpIVk44wjHzPToXVMzDog/MVgNh/wW4a35uWMASYka5f5s/wfmwXdlNh4o99hA5g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEF5ppWiuMwrWVZPBNXvFVIqqtTUShAwbfplup6TbyzqzSsoGjV6l2VJ24YTL7r6k3g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a7fed0e4-c586-4b00-bb92-d68572445768",
+                            SecurityStamp = "edcf1f63-066a-4bb1-bdac-7728ea47e069",
                             TwoFactorEnabled = false,
                             UserName = "admin@crushingbind.com"
                         });
@@ -221,8 +221,8 @@ namespace Server.Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "3edcf7c1-04e3-43ab-88dd-ca5764519791",
-                            RoleId = "773a1e1e-8f12-4069-860f-aaa294782bfe"
+                            UserId = "2134d2a4-556c-471b-aa79-9f2b073e3710",
+                            RoleId = "55e24c6d-6352-4faa-a252-a17e9df3a613"
                         });
                 });
 
@@ -340,7 +340,7 @@ namespace Server.Data.Migrations
                             ArchiveThumbnailImagePath = "uploads/placeholder.jpg",
                             Content = "",
                             Excerpt = "This is an excerpt example",
-                            PublishDate = "05/24/2022",
+                            PublishDate = "06/21/2022",
                             Published = true,
                             Title = "First post"
                         },
@@ -351,7 +351,7 @@ namespace Server.Data.Migrations
                             ArchiveThumbnailImagePath = "uploads/placeholder.jpg",
                             Content = "",
                             Excerpt = "This is an excerpt example",
-                            PublishDate = "05/24/2022",
+                            PublishDate = "06/21/2022",
                             Published = true,
                             Title = "Second post"
                         },
@@ -362,7 +362,7 @@ namespace Server.Data.Migrations
                             ArchiveThumbnailImagePath = "uploads/placeholder.jpg",
                             Content = "",
                             Excerpt = "This is an excerpt example",
-                            PublishDate = "05/24/2022",
+                            PublishDate = "06/21/2022",
                             Published = true,
                             Title = "Third post"
                         },
@@ -373,7 +373,7 @@ namespace Server.Data.Migrations
                             ArchiveThumbnailImagePath = "uploads/placeholder.jpg",
                             Content = "",
                             Excerpt = "This is an excerpt example",
-                            PublishDate = "05/24/2022",
+                            PublishDate = "06/21/2022",
                             Published = true,
                             Title = "Fourth post"
                         },
@@ -384,7 +384,7 @@ namespace Server.Data.Migrations
                             ArchiveThumbnailImagePath = "uploads/placeholder.jpg",
                             Content = "",
                             Excerpt = "This is an excerpt example",
-                            PublishDate = "05/24/2022",
+                            PublishDate = "06/21/2022",
                             Published = true,
                             Title = "Fifth post"
                         },
@@ -395,7 +395,7 @@ namespace Server.Data.Migrations
                             ArchiveThumbnailImagePath = "uploads/placeholder.jpg",
                             Content = "",
                             Excerpt = "This is an excerpt example",
-                            PublishDate = "05/24/2022",
+                            PublishDate = "06/21/2022",
                             Published = true,
                             Title = "Sixth post"
                         });

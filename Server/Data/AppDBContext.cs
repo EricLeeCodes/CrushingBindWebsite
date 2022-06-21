@@ -29,7 +29,7 @@ namespace Server.Data
                 {
                     ArchiveId = i,
                     ArchiveThumbnailImagePath = $"uploads/Chapter_{i}_Thumbnail.png",
-                    ArchiveChapterNumber = $"Chapter {i}"
+                    ArchiveChapterNumber = $"Part {i}"
                 };
             }
 

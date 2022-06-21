@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Server.Data.Migrations
+namespace Server.Migrations
 {
     public partial class FirstMigration : Migration
     {
@@ -211,47 +211,47 @@ namespace Server.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "773a1e1e-8f12-4069-860f-aaa294782bfe", "ac506b22-5e27-4b8b-bffc-db00eb5fecbf", "Administrator", "ADMINISTRATOR" });
+                values: new object[] { "55e24c6d-6352-4faa-a252-a17e9df3a613", "20a0b9ff-a5aa-4538-acff-ac216a8ee42d", "Administrator", "ADMINISTRATOR" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "3edcf7c1-04e3-43ab-88dd-ca5764519791", 5, "69a22798-e61c-4011-b070-8f09b88bef8f", "admin@crushingbind.com", false, false, null, "ADMIN@CRUSHINGBIND.COM", "ADMIN@CRUSHINGBIND.COM", "AQAAAAEAACcQAAAAEBYpIVk44wjHzPToXVMzDog/MVgNh/wW4a35uWMASYka5f5s/wfmwXdlNh4o99hA5g==", null, false, "a7fed0e4-c586-4b00-bb92-d68572445768", false, "admin@crushingbind.com" });
+                values: new object[] { "2134d2a4-556c-471b-aa79-9f2b073e3710", 5, "5c30d98c-16f2-46a4-8d05-c52d53592938", "admin@crushingbind.com", false, false, null, "ADMIN@CRUSHINGBIND.COM", "ADMIN@CRUSHINGBIND.COM", "AQAAAAEAACcQAAAAEF5ppWiuMwrWVZPBNXvFVIqqtTUShAwbfplup6TbyzqzSsoGjV6l2VJ24YTL7r6k3g==", null, false, "edcf1f63-066a-4bb1-bdac-7728ea47e069", false, "admin@crushingbind.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "773a1e1e-8f12-4069-860f-aaa294782bfe", "3edcf7c1-04e3-43ab-88dd-ca5764519791" });
+                values: new object[] { "55e24c6d-6352-4faa-a252-a17e9df3a613", "2134d2a4-556c-471b-aa79-9f2b073e3710" });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "PostId", "ArchiveId", "ArchiveThumbnailImagePath", "Content", "Excerpt", "PublishDate", "Published", "Title" },
-                values: new object[] { 1, 1, "uploads/placeholder.jpg", "", "This is an excerpt example", "05/24/2022", true, "First post" });
+                values: new object[] { 1, 1, "uploads/placeholder.jpg", "", "This is an excerpt example", "06/21/2022", true, "First post" });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "PostId", "ArchiveId", "ArchiveThumbnailImagePath", "Content", "Excerpt", "PublishDate", "Published", "Title" },
-                values: new object[] { 2, 2, "uploads/placeholder.jpg", "", "This is an excerpt example", "05/24/2022", true, "Second post" });
+                values: new object[] { 2, 2, "uploads/placeholder.jpg", "", "This is an excerpt example", "06/21/2022", true, "Second post" });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "PostId", "ArchiveId", "ArchiveThumbnailImagePath", "Content", "Excerpt", "PublishDate", "Published", "Title" },
-                values: new object[] { 3, 3, "uploads/placeholder.jpg", "", "This is an excerpt example", "05/24/2022", true, "Third post" });
+                values: new object[] { 3, 3, "uploads/placeholder.jpg", "", "This is an excerpt example", "06/21/2022", true, "Third post" });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "PostId", "ArchiveId", "ArchiveThumbnailImagePath", "Content", "Excerpt", "PublishDate", "Published", "Title" },
-                values: new object[] { 4, 1, "uploads/placeholder.jpg", "", "This is an excerpt example", "05/24/2022", true, "Fourth post" });
+                values: new object[] { 4, 1, "uploads/placeholder.jpg", "", "This is an excerpt example", "06/21/2022", true, "Fourth post" });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "PostId", "ArchiveId", "ArchiveThumbnailImagePath", "Content", "Excerpt", "PublishDate", "Published", "Title" },
-                values: new object[] { 5, 2, "uploads/placeholder.jpg", "", "This is an excerpt example", "05/24/2022", true, "Fifth post" });
+                values: new object[] { 5, 2, "uploads/placeholder.jpg", "", "This is an excerpt example", "06/21/2022", true, "Fifth post" });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "PostId", "ArchiveId", "ArchiveThumbnailImagePath", "Content", "Excerpt", "PublishDate", "Published", "Title" },
-                values: new object[] { 6, 3, "uploads/placeholder.jpg", "", "This is an excerpt example", "05/24/2022", true, "Sixth post" });
+                values: new object[] { 6, 3, "uploads/placeholder.jpg", "", "This is an excerpt example", "06/21/2022", true, "Sixth post" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

@@ -1,0 +1,20 @@
+﻿a {
+    text-decoration: none !important;
+    color: black !important;
+}
+
+
+.start-reading-btn {
+    background-image: linear-gradient(90deg, gold, pink);
+    background-size: 0% 3px;
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    transition: background-size 300ms ease;
+
+    font-size: 3rem;
+}
+
+.start-reading-btn:hover {
+    background-size: 100% 3px;
+    font-size: 3.2rem;
+}

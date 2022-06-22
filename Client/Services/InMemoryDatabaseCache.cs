@@ -17,7 +17,7 @@ namespace Client.Services
         
 
         private List<ArchiveModel> _archiveModels = null;
-
+    
         internal List<ArchiveModel> ArchiveModels
         {
             get 

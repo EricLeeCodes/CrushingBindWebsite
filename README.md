@@ -67,5 +67,13 @@ Now if we look at it in the public site, we can see that we have a clickable car
 
 ![Web capture_22-6-2022_21379_localhost](https://user-images.githubusercontent.com/87954849/175195245-95c0f680-4edc-4bea-bdc1-a1435f72f76e.jpeg)
 
+We can keep repeating this process and continue to build up on the Website Novel.
 
+The pictures below show the Character and About page as well:
+
+
+<div align="center">  
+  <img src="https://user-images.githubusercontent.com/87954849/175429718-00b72ef4-fb53-4f2c-ab45-d11d53c7ff30.jpeg">
+  <img src="https://user-images.githubusercontent.com/87954849/175429599-71338e3d-d1c0-443a-acca-fce47e0d3b59.jpg">
+</div> 
 
